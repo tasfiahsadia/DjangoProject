@@ -1,0 +1,16 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Database and uploads
+db.sqlite3
+media/
+
+# Secrets
+.env
+
+# PyCharm
+.idea/
