@@ -16,3 +16,14 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        ordering = ['code']
+
+    def __str__(self):
+        return self.code
