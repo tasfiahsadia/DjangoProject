@@ -29,5 +29,9 @@
         <input type="hidden" name="next" value="{{ next }}">
         <button type="submit" class="btn btn-uap w-100 mt-2">Login</button>
     </form>
+
+    <p class="auth-links text-center">
+        <a href="{% url 'accounts:register' %}">Register as a student</a>
+    </p>
 </div>
 {% endblock %}
