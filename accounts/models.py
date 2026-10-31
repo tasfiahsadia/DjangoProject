@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -29,6 +30,7 @@ class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='students')
     student_id = models.CharField(max_length=20, unique=True)
+    batch = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     profile_picture = models.ImageField(upload_to='accounts/profile_pictures/', blank=True)
     bio = models.TextField(blank=True)
 
