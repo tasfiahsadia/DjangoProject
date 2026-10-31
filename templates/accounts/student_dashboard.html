@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="h3 page-title mb-4">Student Dashboard</h1>
+
+{% if profile %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Welcome, {{ user.get_full_name|default:user.username }}</h2>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Student ID</dt>
+            <dd class="col-sm-9">{{ profile.student_id }}</dd>
+            <dt class="col-sm-3">Department</dt>
+            <dd class="col-sm-9">{{ profile.department.name }} ({{ profile.department.code }})</dd>
+            <dt class="col-sm-3">Batch</dt>
+            <dd class="col-sm-9">{{ profile.batch }}</dd>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">{{ user.email }}</dd>
+        </dl>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning">
+    Your student profile has not been set up yet. Please contact the administrator.
+</div>
+{% endif %}
+{% endblock %}

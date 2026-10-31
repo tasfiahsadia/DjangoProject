@@ -1,6 +1,6 @@
 import re
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.db import transaction
 
 from .models import Department, StudentProfile, User
@@ -12,7 +12,7 @@ class StudentRegistrationForm(UserCreationForm):
         empty_label='Select your department',
     )
     student_id = forms.CharField(max_length=8)
-    batch = forms.IntegerField(min_value=1)
+    batch = forms.IntegerField(min_value=1, max_value=999)
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -50,3 +50,15 @@ class StudentRegistrationForm(UserCreationForm):
             batch=self.cleaned_data['batch'],
         )
         return user
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'placeholder': 'Username',
+            'autocomplete': 'username',
+        })
+        self.fields['password'].widget.attrs.update({
+            'placeholder': 'Password',
+            'autocomplete': 'current-password',
+        })
