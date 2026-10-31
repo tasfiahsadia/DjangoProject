@@ -11,12 +11,35 @@ class StudentRegistrationForm(UserCreationForm):
         queryset=Department.objects.all(),
         empty_label='Select your department',
     )
-    student_id = forms.CharField(max_length=8)
+    student_id = forms.CharField(max_length=8, label='Student ID')
     batch = forms.IntegerField(min_value=1, max_value=999)
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ('username', 'email')
+
+        field_order = [
+            'username',
+            'email',
+            'department',
+            'student_id',
+            'batch',
+            'password1',
+            'password2',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        placeholders = {
+            'username': 'Username',
+            'email': 'University email (@uap-bd.edu)',
+            'student_id': 'Student ID (8 digits)',
+            'batch': 'Batch (e.g. 57)',
+            'password1': 'Password',
+            'password2': 'Confirm password',
+        }
+        for name, text in placeholders.items():
+            self.fields[name].widget.attrs['placeholder'] = text
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()

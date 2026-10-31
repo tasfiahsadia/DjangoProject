@@ -1,0 +1,13 @@
+<div class="mb-3">
+    <label for="{{ field.id_for_label }}" class="auth-label">{{ field.label }}</label>
+    <div class="auth-field mb-0">
+        <i class="bi bi-{{ icon }}"></i>
+        {{ field }}
+    </div>
+    {% for error in field.errors %}
+    <div class="auth-error">{{ error }}</div>
+    {% endfor %}
+    {% if show_help and field.help_text %}
+    <div class="auth-help">{{ field.help_text|safe }}</div>
+    {% endif %}
+</div>
