@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="h3 page-title mb-4">Faculty Dashboard</h1>
+
+{% if profile %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Welcome, {{ user.get_full_name|default:user.username }}</h2>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Designation</dt>
+            <dd class="col-sm-9">{{ profile.get_designation_display }}</dd>
+            <dt class="col-sm-3">Department</dt>
+            <dd class="col-sm-9">{{ profile.department.name }} ({{ profile.department.code }})</dd>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">{{ user.email }}</dd>
+        </dl>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning">
+    Your faculty profile has not been set up yet. Please contact the administrator.
+</div>
+{% endif %}
+{% endblock %}
