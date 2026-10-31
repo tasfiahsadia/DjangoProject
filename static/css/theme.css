@@ -1,0 +1,178 @@
+/* ---------- UAP Synergy theme ---------- */
+:root {
+    --uap-purple: #8e1d91;
+    --uap-magenta: #b81d80;
+    --uap-navy: #2f2c76;
+    --uap-green: #2e7d32;
+    --uap-page-bg: #f4f2f8;
+    --uap-text: #1f1f2e;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--uap-page-bg);
+    color: var(--uap-text);
+}
+
+main {
+    flex: 1;
+}
+
+/* ---------- Header and menu bar ---------- */
+.uap-header-top {
+    background: #fff;
+    border-bottom: 3px solid var(--uap-magenta);
+}
+
+.uap-header-top img {
+    height: 56px;
+    width: auto;
+}
+
+.uap-brand-title {
+    color: var(--uap-navy);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.uap-brand-tagline {
+    color: #6b6b80;
+    font-size: 0.8rem;
+}
+
+.uap-nav {
+    background: var(--uap-navy);
+}
+
+.uap-nav a {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.uap-nav a:hover {
+    background: var(--uap-purple);
+}
+
+.uap-footer {
+    background: var(--uap-navy);
+    color: #fff;
+}
+
+.page-title {
+    color: var(--uap-navy);
+    font-weight: 700;
+}
+
+/* ---------- Buttons ---------- */
+.btn-uap {
+    background: var(--uap-purple);
+    color: #fff;
+    border: 0;
+    border-radius: 23px;
+    transition: background 0.3s;
+}
+
+.btn-uap:hover,
+.btn-uap:focus {
+    background: var(--uap-green);
+    color: #fff;
+}
+
+/* ---------- Login and registration pages ---------- */
+body.auth-page {
+    background-color: #fff;
+    background-image: linear-gradient(
+        -45deg,
+        rgba(89, 5, 91, 0.77),
+        rgba(0, 128, 0, 0.61),
+        rgba(0, 0, 255, 0.59),
+        rgba(255, 255, 0, 0.53)
+    );
+    background-size: 400% 400%;
+    animation: uap-gradient 12s ease infinite;
+}
+
+@keyframes uap-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.auth-page {
+        animation: none;
+    }
+}
+
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem 2.2rem;
+    background: rgba(255, 255, 255, 0.17);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+}
+
+.auth-logo {
+    width: 150px;
+    max-width: 100%;
+}
+
+.auth-title {
+    margin: 0.5rem 0 0;
+    color: var(--uap-navy);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.auth-tagline {
+    margin: 0;
+    color: #222;
+    font-size: 0.85rem;
+}
+
+.auth-field {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.auth-field i {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+    color: #3c3636;
+    font-size: 1.1rem;
+}
+
+.auth-field input {
+    width: 100%;
+    height: 42px;
+    padding: 0 0.5rem 0 2.2rem;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #000;
+    color: #111;
+    outline: 0;
+}
+
+.auth-field input::placeholder {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.auth-field input:focus {
+    border-bottom: 2px solid var(--uap-purple);
+}
