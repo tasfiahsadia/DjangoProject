@@ -3,29 +3,42 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<h1 class="h3 page-title mb-4">Edit Profile</h1>
-
-<div class="card shadow-sm">
-    <div class="card-body">
-        <form method="post" enctype="multipart/form-data" novalidate>
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-md-6">
-                    {% include 'partials/form_field.html' with field=user_form.first_name %}
-                </div>
-                <div class="col-md-6">
-                    {% include 'partials/form_field.html' with field=user_form.last_name %}
-                </div>
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-pencil-square"></i></div>
+            <div>
+                <h1>Edit Profile</h1>
+                <p>Update your name, picture and bio</p>
             </div>
-            {% include 'partials/form_field.html' with field=profile_form.profile_picture %}
-            {% include 'partials/form_field.html' with field=profile_form.bio %}
+        </div>
 
-            <p class="text-muted small">
-                Department and academic details can only be changed by the administrator.
-            </p>
-            <button type="submit" class="btn btn-uap px-4">Save changes</button>
-            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary px-4">Cancel</a>
-        </form>
+        <div class="ucam-card-body">
+            <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        {% include 'partials/form_field.html' with field=user_form.first_name %}
+                    </div>
+                    <div class="col-md-6">
+                        {% include 'partials/form_field.html' with field=user_form.last_name %}
+                    </div>
+                </div>
+                {% include 'partials/form_field.html' with field=profile_form.profile_picture %}
+                {% include 'partials/form_field.html' with field=profile_form.bio %}
+
+                <p class="ucam-help">
+                    Department and academic details can only be changed by the administrator.
+                </p>
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i> Save changes
+                    </button>
+                    <a href="{% url 'accounts:profile' %}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

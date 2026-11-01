@@ -3,52 +3,80 @@
 {% block title %}My Profile{% endblock %}
 
 {% block content %}
-<h1 class="h3 page-title mb-4">My Profile</h1>
-
-{% if profile %}
-<div class="card shadow-sm">
-    <div class="card-body">
-        <div class="row g-4">
-            <div class="col-md-3 text-center">
-                {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="Profile picture" class="profile-picture">
-                {% else %}
-                <i class="bi bi-person-circle profile-placeholder"></i>
-                {% endif %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-person-circle"></i></div>
+            <div>
+                <h1>My Profile</h1>
+                <p>Your account information</p>
             </div>
-            <div class="col-md-9">
-                <h2 class="h4 mb-1">{{ user.get_full_name|default:user.username }}</h2>
-                <p class="text-muted">{{ user.get_role_display }}</p>
+        </div>
 
-                <dl class="row">
-                    <dt class="col-sm-3">Username</dt>
-                    <dd class="col-sm-9">{{ user.username }}</dd>
-                    <dt class="col-sm-3">Email</dt>
-                    <dd class="col-sm-9">{{ user.email }}</dd>
-                    <dt class="col-sm-3">Department</dt>
-                    <dd class="col-sm-9">{{ profile.department.name }} ({{ profile.department.code }})</dd>
-                    {% if user.role == 'STUDENT' %}
-                    <dt class="col-sm-3">Student ID</dt>
-                    <dd class="col-sm-9">{{ profile.student_id }}</dd>
-                    <dt class="col-sm-3">Batch</dt>
-                    <dd class="col-sm-9">{{ profile.batch }}</dd>
+        <div class="ucam-card-body">
+            {% if profile %}
+            <div class="ucam-profile-layout">
+                <div class="ucam-profile-side">
+                    {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile picture" class="ucam-avatar-lg">
                     {% else %}
-                    <dt class="col-sm-3">Designation</dt>
-                    <dd class="col-sm-9">{{ profile.get_designation_display }}</dd>
+                    <div class="ucam-avatar-lg ucam-avatar-initials">{{ user.get_full_name|default:user.username|first|upper }}</div>
                     {% endif %}
-                    <dt class="col-sm-3">About</dt>
-                    <dd class="col-sm-9">{{ profile.bio|default:"-"|linebreaksbr }}</dd>
-                </dl>
+                    <h2 class="ucam-profile-fullname">{{ user.get_full_name|default:user.username }}</h2>
+                    <span class="ucam-role-badge">{{ user.get_role_display }}</span>
+                </div>
 
-                <a href="{% url 'accounts:profile_edit' %}" class="btn btn-uap px-4">Edit profile</a>
-                <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary px-4">Change password</a>
+                <div>
+                    <div class="ucam-info-grid mb-0">
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Username</span>
+                            <span class="ucam-info-value">{{ user.username }}</span>
+                        </div>
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Email</span>
+                            <span class="ucam-info-value">{{ user.email }}</span>
+                        </div>
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Department</span>
+                            <span class="ucam-info-value">{{ profile.department.name }} ({{ profile.department.code }})</span>
+                        </div>
+                        {% if user.role == 'STUDENT' %}
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Student ID</span>
+                            <span class="ucam-info-value">{{ profile.student_id }}</span>
+                        </div>
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Batch</span>
+                            <span class="ucam-info-value">{{ profile.batch }}</span>
+                        </div>
+                        {% else %}
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Designation</span>
+                            <span class="ucam-info-value">{{ profile.get_designation_display }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="ucam-info-item full">
+                            <span class="ucam-info-label">About</span>
+                            <span class="ucam-info-value">{{ profile.bio|default:"-"|linebreaksbr }}</span>
+                        </div>
+                    </div>
+
+                    <div class="ucam-actions">
+                        <a href="{% url 'accounts:profile_edit' %}" class="ucam-btn ucam-btn-blue">
+                            <i class="bi bi-pencil-square"></i> Edit profile
+                        </a>
+                        <a href="{% url 'accounts:password_change' %}" class="ucam-btn ucam-btn-outline">
+                            <i class="bi bi-key"></i> Change password
+                        </a>
+                    </div>
+                </div>
             </div>
+            {% else %}
+            <div class="alert alert-warning mb-0">
+                Your profile has not been set up yet. Please contact the administrator.
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
-{% else %}
-<div class="alert alert-warning">
-    Your profile has not been set up yet. Please contact the administrator.
-</div>
-{% endif %}
 {% endblock %}
