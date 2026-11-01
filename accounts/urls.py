@@ -19,9 +19,11 @@ urlpatterns = [
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.register, name='register'),
+    path('password/change/', views.PasswordChangeProfileView.as_view(), name='password_change'),
     path('password/reset/', views.PasswordResetRequestView.as_view(), name='password_reset'),
-    path(
-        'password/reset/<uidb64>/<token>/', views.PasswordResetSetView.as_view(), name='password_reset_confirm'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('password/reset/<uidb64>/<token>/', views.PasswordResetSetView.as_view(), name='password_reset_confirm'),
     path('student/', views.student_dashboard, name='student_dashboard'),
     path('faculty/', views.faculty_dashboard, name='faculty_dashboard'),
 ]

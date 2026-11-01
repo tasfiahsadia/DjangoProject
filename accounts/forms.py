@@ -1,9 +1,10 @@
 import re
 from django import forms
-from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm, UserCreationForm,)
+from django.contrib.auth.forms import (AuthenticationForm,PasswordChangeForm,PasswordResetForm,SetPasswordForm,UserCreationForm,)
+from django.core.files.uploadedfile import UploadedFile
 from django.db import transaction
 
-from .models import Department, StudentProfile, User
+from .models import Department, FacultyProfile, StudentProfile, User
 
 
 class StudentRegistrationForm(UserCreationForm):
@@ -100,3 +101,44 @@ class ResetPasswordForm(SetPasswordForm):
         super().__init__(*args, **kwargs)
         self.fields['new_password1'].widget.attrs['placeholder'] = 'New password'
         self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirm new password'
+
+
+class UserNameForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class StudentProfileForm(forms.ModelForm):
+    class Meta:
+        model = StudentProfile
+        fields = ('profile_picture', 'bio')
+        widgets = {
+            'profile_picture': forms.ClearableFileInput(
+                attrs={'class': 'form-control', 'accept': 'image/*'}
+            ),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
+
+    def clean_profile_picture(self):
+        picture = self.cleaned_data.get('profile_picture')
+        # Check the size only for a newly uploaded file, never for an old one.
+        if isinstance(picture, UploadedFile) and picture.size > 2 * 1024 * 1024:
+            raise forms.ValidationError('Image must be 2 MB or smaller.')
+        return picture
+
+
+class FacultyProfileForm(StudentProfileForm):
+    class Meta(StudentProfileForm.Meta):
+        model = FacultyProfile
+
+
+class StyledPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'

@@ -11,6 +11,12 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.STUDENT)
 
+    @property
+    def profile(self):
+        """Return the StudentProfile or FacultyProfile of this user (None if missing)."""
+        name = 'faculty_profile' if self.role == self.Role.FACULTY else 'student_profile'
+        return getattr(self, name, None)
+
     def __str__(self):
         return self.username
 
