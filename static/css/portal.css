@@ -1,0 +1,249 @@
+/* ---------- Portal layout: follows the look of the UCAM portal ---------- */
+:root {
+    --ucam-navy: #00008b;
+    --ucam-stripe: #433b20;
+    --ucam-menu-bg: #f2f2f2;
+    --ucam-page-bg: #f6f7f7;
+    --ucam-line: #dadada;
+    --ucam-green: #1f6c14;
+    --ucam-salmon: #cf6c6c;
+    --ucam-muted: #5d5d5d;
+}
+
+body {
+    background: #fff;
+    font-family: Roboto, "Segoe UI", Arial, sans-serif;
+}
+
+/* ----- Header ----- */
+.portal-stripe {
+    height: 12px;
+    background: var(--ucam-stripe);
+}
+
+.portal-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 3rem;
+    background: #fff;
+}
+
+.portal-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.portal-logo {
+    height: 96px;
+    width: auto;
+}
+
+.portal-appname {
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--ucam-line);
+    color: var(--ucam-navy);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.portal-appname small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--ucam-muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.portal-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.portal-user-text {
+    text-align: right;
+    font-size: 0.95rem;
+    line-height: 1.9;
+}
+
+.portal-user-name {
+    color: #1d0909;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+}
+
+.portal-user-name:hover {
+    color: var(--ucam-navy);
+}
+
+.portal-user-id {
+    margin-left: 0.5rem;
+    color: var(--ucam-green);
+}
+
+.portal-logout {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ucam-muted);
+    font: inherit;
+}
+
+.portal-logout:hover {
+    color: var(--ucam-navy);
+    text-decoration: underline;
+}
+
+.portal-label-green,
+.portal-label-salmon {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.portal-label-green {
+    color: var(--ucam-green);
+}
+
+.portal-label-salmon {
+    color: var(--ucam-salmon);
+}
+
+.portal-value {
+    color: var(--ucam-green);
+}
+
+.portal-avatar,
+.portal-avatar-empty {
+    width: 100px;
+    height: 120px;
+    border: 1px solid var(--ucam-line);
+}
+
+.portal-avatar {
+    object-fit: cover;
+}
+
+.portal-avatar-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ucam-menu-bg);
+    color: #9a9aa8;
+    font-size: 4rem;
+}
+
+/* ----- Menu bar ----- */
+.portal-nav {
+    background: var(--ucam-menu-bg);
+    border-bottom: 3px solid var(--ucam-navy);
+}
+
+.portal-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0 3rem;
+    list-style: none;
+}
+
+.portal-nav a {
+    display: block;
+    padding: 0.9rem 1.4rem;
+    color: var(--ucam-navy);
+    font-size: 1.15rem;
+    text-decoration: none;
+}
+
+.portal-nav a:hover {
+    background: #e4e4f0;
+}
+
+.portal-nav a.active {
+    font-weight: 700;
+}
+
+/* ----- Page body ----- */
+.portal-body {
+    margin: 0 2rem;
+    padding: 1.75rem 3.5rem;
+    background: var(--ucam-page-bg);
+}
+
+.portal-box {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 1.75rem;
+    background: var(--ucam-page-bg);
+    border: 6px solid var(--ucam-navy);
+}
+
+.page-title {
+    margin: 0 0 1.5rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--ucam-line);
+    border-bottom: 1px solid var(--ucam-line);
+    color: #000;
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+.portal-box .card {
+    background: #fff;
+    border: 1px solid var(--ucam-line);
+    border-radius: 0;
+    box-shadow: none !important;
+}
+
+/* ----- Footer ----- */
+.portal-footer {
+    width: 84%;
+    margin: 2.5rem auto 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ucam-navy);
+    color: var(--ucam-muted);
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* ----- Small screens ----- */
+@media (max-width: 768px) {
+    .portal-top {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .portal-brand {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .portal-appname {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .portal-logo {
+        height: 72px;
+    }
+
+    .portal-nav ul {
+        padding: 0;
+    }
+
+    .portal-body {
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .portal-box {
+        padding: 1rem;
+    }
+}

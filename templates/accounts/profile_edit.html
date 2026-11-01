@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<h1 class="h3 page-title mb-4">Edit Profile</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% include 'partials/form_field.html' with field=user_form.first_name %}
+                </div>
+                <div class="col-md-6">
+                    {% include 'partials/form_field.html' with field=user_form.last_name %}
+                </div>
+            </div>
+            {% include 'partials/form_field.html' with field=profile_form.profile_picture %}
+            {% include 'partials/form_field.html' with field=profile_form.bio %}
+
+            <p class="text-muted small">
+                Department and academic details can only be changed by the administrator.
+            </p>
+            <button type="submit" class="btn btn-uap px-4">Save changes</button>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

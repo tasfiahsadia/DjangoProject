@@ -20,54 +20,6 @@ main {
     flex: 1;
 }
 
-/* ---------- Header and menu bar ---------- */
-.uap-header-top {
-    background: #fff;
-    border-bottom: 3px solid var(--uap-magenta);
-}
-
-.uap-header-top img {
-    height: 56px;
-    width: auto;
-}
-
-.uap-brand-title {
-    color: var(--uap-navy);
-    font-size: 1.3rem;
-    font-weight: 700;
-    line-height: 1.1;
-}
-
-.uap-brand-tagline {
-    color: #6b6b80;
-    font-size: 0.8rem;
-}
-
-.uap-nav {
-    background: var(--uap-navy);
-}
-
-.uap-nav a {
-    display: inline-block;
-    padding: 0.6rem 1rem;
-    color: #fff;
-    text-decoration: none;
-}
-
-.uap-nav a:hover {
-    background: var(--uap-purple);
-}
-
-.uap-footer {
-    background: var(--uap-navy);
-    color: #fff;
-}
-
-.page-title {
-    color: var(--uap-navy);
-    font-weight: 700;
-}
-
 /* ---------- Buttons ---------- */
 .btn-uap {
     background: var(--uap-purple);
@@ -220,4 +172,35 @@ body.auth-page {
     color: var(--uap-text);
     font-size: 0.8rem;
     font-weight: 600;
+}
+
+/* ---------- Avatars and profile ---------- */
+.uap-header-top img.avatar {
+    width: 36px;
+    height: 36px;
+}
+
+.avatar {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-icon {
+    color: var(--uap-navy);
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.profile-picture {
+    width: 140px;
+    height: 140px;
+    border: 3px solid var(--uap-magenta);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-placeholder {
+    color: var(--uap-navy);
+    font-size: 7rem;
+    line-height: 1;
 }

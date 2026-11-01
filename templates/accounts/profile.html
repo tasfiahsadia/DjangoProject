@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<h1 class="h3 page-title mb-4">My Profile</h1>
+
+{% if profile %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile picture" class="profile-picture">
+                {% else %}
+                <i class="bi bi-person-circle profile-placeholder"></i>
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                <h2 class="h4 mb-1">{{ user.get_full_name|default:user.username }}</h2>
+                <p class="text-muted">{{ user.get_role_display }}</p>
+
+                <dl class="row">
+                    <dt class="col-sm-3">Username</dt>
+                    <dd class="col-sm-9">{{ user.username }}</dd>
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">{{ user.email }}</dd>
+                    <dt class="col-sm-3">Department</dt>
+                    <dd class="col-sm-9">{{ profile.department.name }} ({{ profile.department.code }})</dd>
+                    {% if user.role == 'STUDENT' %}
+                    <dt class="col-sm-3">Student ID</dt>
+                    <dd class="col-sm-9">{{ profile.student_id }}</dd>
+                    <dt class="col-sm-3">Batch</dt>
+                    <dd class="col-sm-9">{{ profile.batch }}</dd>
+                    {% else %}
+                    <dt class="col-sm-3">Designation</dt>
+                    <dd class="col-sm-9">{{ profile.get_designation_display }}</dd>
+                    {% endif %}
+                    <dt class="col-sm-3">About</dt>
+                    <dd class="col-sm-9">{{ profile.bio|default:"-"|linebreaksbr }}</dd>
+                </dl>
+
+                <a href="{% url 'accounts:profile_edit' %}" class="btn btn-uap px-4">Edit profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning">
+    Your profile has not been set up yet. Please contact the administrator.
+</div>
+{% endif %}
+{% endblock %}
