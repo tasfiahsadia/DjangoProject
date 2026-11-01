@@ -1,35 +1,34 @@
 {% extends 'auth_base.html' %}
-{% load static %}
 
 {% block title %}Student Registration{% endblock %}
+{% block auth_title %}Create Account{% endblock %}
+{% block auth_subtitle %}Register as a student using your university email (@uap-bd.edu).{% endblock %}
 
 {% block auth_content %}
-<div class="auth-card">
-    <div class="text-center mb-4">
-        <img src="{% static 'images/uap.png' %}" alt="University of Asia Pacific logo" class="auth-logo">
-        <h1 class="auth-title">Student Registration</h1>
-        <p class="auth-tagline">Use your university email (@uap-bd.edu)</p>
+<form method="post" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+    <div class="ucam-alert-banner">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div>{{ form.non_field_errors.0 }}</div>
     </div>
+    {% endif %}
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-        <div class="alert alert-danger py-2 small">{{ form.non_field_errors.0 }}</div>
-        {% endif %}
+    {% include 'partials/auth_field.html' with field=form.username icon='person-fill' %}
+    {% include 'partials/auth_field.html' with field=form.email icon='envelope-fill' %}
+    {% include 'partials/auth_field.html' with field=form.department icon='building' %}
+    {% include 'partials/auth_field.html' with field=form.student_id icon='card-text' %}
+    {% include 'partials/auth_field.html' with field=form.batch icon='123' %}
+    {% include 'partials/auth_field.html' with field=form.password1 icon='lock-fill' toggle=True show_help=True %}
+    {% include 'partials/auth_field.html' with field=form.password2 icon='lock' toggle=True %}
 
-        {% include 'partials/auth_field.html' with field=form.username icon='person-fill' %}
-        {% include 'partials/auth_field.html' with field=form.email icon='envelope-fill' %}
-        {% include 'partials/auth_field.html' with field=form.department icon='building' %}
-        {% include 'partials/auth_field.html' with field=form.student_id icon='card-text' %}
-        {% include 'partials/auth_field.html' with field=form.batch icon='123' %}
-        {% include 'partials/auth_field.html' with field=form.password1 icon='lock-fill' show_help=True %}
-        {% include 'partials/auth_field.html' with field=form.password2 icon='lock' %}
+    <button type="submit" class="ucam-btn-primary">
+        <i class="bi bi-person-plus-fill"></i> Create account
+    </button>
+</form>
 
-        <button type="submit" class="btn btn-uap w-100 mt-2">Create account</button>
-    </form>
-
-    <p class="auth-links text-center">
-        Already have an account? <a href="{% url 'accounts:login' %}">Login</a>
-    </p>
+<div class="ucam-alt-link">
+    Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a>
 </div>
 {% endblock %}
