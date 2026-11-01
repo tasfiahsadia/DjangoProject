@@ -80,6 +80,10 @@
                 <a href="{% url 'accounts:profile' %}"
                    class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>
             </li>
+            <li>
+                <a href="{% url 'accounts:password_change' %}"
+                   class="{% if url_name == 'password_change' %}active{% endif %}">Change Password</a>
+            </li>
         </ul>
     </nav>
     {% endwith %}
