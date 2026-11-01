@@ -139,3 +139,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:dashboard'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+
+# Bootstrap calls the red alert "danger", Django calls it "error"
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
+
+# Development only: "send" emails by printing them in the terminal
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

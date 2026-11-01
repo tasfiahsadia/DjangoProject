@@ -1,6 +1,6 @@
 import re
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm, UserCreationForm,)
 from django.db import transaction
 
 from .models import Department, StudentProfile, User
@@ -85,3 +85,18 @@ class LoginForm(AuthenticationForm):
             'placeholder': 'Password',
             'autocomplete': 'current-password',
         })
+
+class ResetRequestForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({
+            'placeholder': 'University email',
+            'autocomplete': 'email',
+        })
+
+
+class ResetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].widget.attrs['placeholder'] = 'New password'
+        self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirm new password'

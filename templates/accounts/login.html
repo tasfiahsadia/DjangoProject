@@ -30,8 +30,9 @@
         <button type="submit" class="btn btn-uap w-100 mt-2">Login</button>
     </form>
 
-    <p class="auth-links text-center">
+    <div class="auth-links d-flex justify-content-between">
+        <a href="{% url 'accounts:password_reset' %}">Forgot Your Password ?</a>
         <a href="{% url 'accounts:register' %}">Register as a student</a>
-    </p>
+    </div>
 </div>
 {% endblock %}
