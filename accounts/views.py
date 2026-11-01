@@ -1,9 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 
-from .forms import StudentRegistrationForm
+from .forms import ResetPasswordForm, ResetRequestForm, StudentRegistrationForm
 from .models import User
 
 def register(request):
@@ -44,3 +47,22 @@ def faculty_dashboard(request):
         raise PermissionDenied
     profile = getattr(request.user, 'faculty_profile', None)
     return render(request, 'accounts/faculty_dashboard.html', {'profile': profile})
+
+
+class PasswordResetRequestView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    email_template_name = 'accounts/password_reset_email.txt'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+    form_class = ResetRequestForm
+    success_url = reverse_lazy('accounts:login')
+    success_message = (
+        'If an account with that email exists, '
+        'we have sent password reset instructions.'
+    )
+
+
+class PasswordResetSetView(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    form_class = ResetPasswordForm
+    success_url = reverse_lazy('accounts:login')
+    success_message = 'Your password has been changed. You can now log in.'
