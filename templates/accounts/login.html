@@ -1,38 +1,30 @@
 {% extends 'auth_base.html' %}
-{% load static %}
 
 {% block title %}Login{% endblock %}
+{% block auth_title %}Welcome Back{% endblock %}
+{% block auth_subtitle %}Enter your username and password to access UAP Synergy.{% endblock %}
 
 {% block auth_content %}
-<div class="auth-card">
-    <div class="text-center mb-4">
-        <img src="{% static 'images/uap.png' %}" alt="University of Asia Pacific logo" class="auth-logo">
-        <h1 class="auth-title">UAP Synergy</h1>
-        <p class="auth-tagline">Connect. Research. Collaborate.</p>
+<form method="post" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+    <div class="ucam-alert-banner">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div>{{ form.non_field_errors.0 }}</div>
     </div>
+    {% endif %}
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-        <div class="alert alert-danger py-2 small">{{ form.non_field_errors.0 }}</div>
-        {% endif %}
+    {% include 'partials/auth_field.html' with field=form.username icon='person-badge' %}
+    {% include 'partials/auth_field.html' with field=form.password icon='key-fill' toggle=True show_forgot=True %}
 
-        <div class="auth-field">
-            <i class="bi bi-person-fill"></i>
-            {{ form.username }}
-        </div>
-        <div class="auth-field">
-            <i class="bi bi-lock-fill"></i>
-            {{ form.password }}
-        </div>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="ucam-btn-primary">
+        <i class="bi bi-box-arrow-in-right"></i> Sign In
+    </button>
+</form>
 
-        <input type="hidden" name="next" value="{{ next }}">
-        <button type="submit" class="btn btn-uap w-100 mt-2">Login</button>
-    </form>
-
-    <div class="auth-links d-flex justify-content-between">
-        <a href="{% url 'accounts:password_reset' %}">Forgot Your Password ?</a>
-        <a href="{% url 'accounts:register' %}">Register as a student</a>
-    </div>
+<div class="ucam-alt-link">
+    New student? <a href="{% url 'accounts:register' %}">Create an account</a>
 </div>
 {% endblock %}
