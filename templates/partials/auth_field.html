@@ -1,13 +1,23 @@
-<div class="mb-3">
-    <label for="{{ field.id_for_label }}" class="auth-label">{{ field.label }}</label>
-    <div class="auth-field mb-0">
-        <i class="bi bi-{{ icon }}"></i>
+<div class="ucam-form-group">
+    <div class="ucam-label-row">
+        <label for="{{ field.id_for_label }}" class="ucam-label">{{ field.label }}</label>
+        {% if show_forgot %}
+        <a href="{% url 'accounts:password_reset' %}" class="ucam-forgot">Forgot password?</a>
+        {% endif %}
+    </div>
+    <div class="ucam-input-wrap{% if toggle %} has-toggle{% endif %}">
+        <i class="bi bi-{{ icon }} ucam-input-icon"></i>
         {{ field }}
+        {% if toggle %}
+        <button type="button" class="ucam-eye-toggle" aria-label="Show or hide password">
+            <i class="bi bi-eye"></i>
+        </button>
+        {% endif %}
     </div>
     {% for error in field.errors %}
-    <div class="auth-error">{{ error }}</div>
+    <div class="ucam-error">{{ error }}</div>
     {% endfor %}
     {% if show_help and field.help_text %}
-    <div class="auth-help">{{ field.help_text|safe }}</div>
+    <div class="ucam-help">{{ field.help_text|safe }}</div>
     {% endif %}
 </div>

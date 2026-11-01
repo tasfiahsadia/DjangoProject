@@ -1,0 +1,18 @@
+{% with url_name=request.resolver_match.url_name %}
+<nav class="ucam-nav" aria-label="Main menu">
+    <ul>
+        <li>
+            <a href="{% url 'accounts:dashboard' %}"
+               class="{% if url_name == 'dashboard' or url_name == 'student_dashboard' or url_name == 'faculty_dashboard' %}active{% endif %}">Home</a>
+        </li>
+        <li>
+            <a href="{% url 'accounts:profile' %}"
+               class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>
+        </li>
+        <li>
+            <a href="{% url 'accounts:password_change' %}"
+               class="{% if url_name == 'password_change' %}active{% endif %}">Change Password</a>
+        </li>
+    </ul>
+</nav>
+{% endwith %}
