@@ -1,27 +1,51 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Faculty Dashboard{% endblock %}
 
 {% block content %}
-<h1 class="h3 page-title mb-4">Faculty Dashboard</h1>
+<div class="ucam-welcome-card">
+    <div class="ucam-welcome-header">
+        <div class="ucam-crest">
+            <img src="{% static 'images/uap.png' %}" alt="UAP Logo">
+        </div>
+        <h1>Welcome to UAP Synergy</h1>
+        <p>University of Asia Pacific &bull; Faculty Dashboard</p>
+    </div>
 
-{% if profile %}
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h2 class="h5 mb-3">Welcome, {{ user.get_full_name|default:user.username }}</h2>
-        <dl class="row mb-0">
-            <dt class="col-sm-3">Designation</dt>
-            <dd class="col-sm-9">{{ profile.get_designation_display }}</dd>
-            <dt class="col-sm-3">Department</dt>
-            <dd class="col-sm-9">{{ profile.department.name }} ({{ profile.department.code }})</dd>
-            <dt class="col-sm-3">Email</dt>
-            <dd class="col-sm-9">{{ user.email }}</dd>
-        </dl>
+    <div class="ucam-welcome-body">
+        <div class="ucam-greeting">
+            You are currently logged in as
+            <span class="ucam-highlight">{{ user.get_full_name|default:user.username }}</span>
+        </div>
+
+        {% if profile %}
+        <div class="ucam-info-grid">
+            <div class="ucam-info-item">
+                <span class="ucam-info-label">Designation</span>
+                <span class="ucam-info-value">{{ profile.get_designation_display }}</span>
+            </div>
+            <div class="ucam-info-item">
+                <span class="ucam-info-label">Department</span>
+                <span class="ucam-info-value">{{ profile.department.name }} ({{ profile.department.code }})</span>
+            </div>
+            <div class="ucam-info-item full">
+                <span class="ucam-info-label">Email</span>
+                <span class="ucam-info-value">{{ user.email }}</span>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+            Your faculty profile has not been set up yet. Please contact the administrator.
+        </div>
+        {% endif %}
+
+        <div class="ucam-tip">
+            <div class="ucam-tip-icon"><i class="bi bi-lightbulb-fill"></i></div>
+            <div><strong>Quick Tip:</strong> Use the top navigation menu to view your profile or change your password.</div>
+        </div>
+
+        {% include 'partials/contact_strip.html' %}
     </div>
 </div>
-{% else %}
-<div class="alert alert-warning">
-    Your faculty profile has not been set up yet. Please contact the administrator.
-</div>
-{% endif %}
 {% endblock %}
