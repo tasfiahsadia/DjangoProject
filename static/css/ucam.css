@@ -1,0 +1,1132 @@
+/* ==========================================================
+   ucam.css : UAP Synergy, UCAM-style design
+   Part 1: colour tokens + login / auth pages
+   ========================================================== */
+
+:root {
+    --ux-navy: #0a2540;
+    --ux-blue-dark: #1e40af;
+    --ux-blue-deeper: #1d4ed8;
+    --ux-blue: #2563eb;
+    --ux-ink: #0f172a;
+    --ux-text: #334155;
+    --ux-muted: #64748b;
+    --ux-soft: #94a3b8;
+    --ux-line: #cbd5e1;
+    --ux-field-bg: #f8fafc;
+}
+
+/* ---------- Auth page: background and centering ---------- */
+body.ucam-auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #eef2f6 0%, #e2e8f0 50%, #f1f5f9 100%);
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ucam-auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+/* ---------- The two-column card ---------- */
+.ucam-auth-card {
+    width: 100%;
+    max-width: 890px;
+    min-height: 510px;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Left brand panel ---------- */
+.ucam-brand-panel {
+    flex: 0 0 380px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 46px 36px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(145deg, #091528 0%, #0f2748 50%, #1e40af 100%);
+}
+
+.ucam-brand-panel::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.ucam-brand-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ucam-logo-box {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.ucam-logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.ucam-brand-university {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    color: #fff;
+}
+
+.ucam-brand-divider {
+    width: 56px;
+    height: 3px;
+    margin-bottom: 16px;
+    background: #3b82f6;
+    border-radius: 2px;
+}
+
+.ucam-brand-title {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #93c5fd;
+}
+
+.ucam-brand-desc {
+    max-width: 280px;
+    margin: 0 0 20px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #cbd5e1;
+}
+
+.ucam-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #e0f2fe;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+/* ---------- Right form panel ---------- */
+.ucam-form-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 44px 46px;
+    background: #fff;
+}
+
+.ucam-form-header {
+    margin-bottom: 24px;
+}
+
+.ucam-form-title {
+    margin: 0 0 5px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--ux-ink);
+}
+
+.ucam-form-subtitle {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--ux-muted);
+}
+
+/* ---------- Form fields (used by partials/auth_field.html) ---------- */
+.ucam-form-group {
+    margin-bottom: 18px;
+}
+
+.ucam-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.ucam-label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ux-text);
+}
+
+.ucam-forgot {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ux-blue);
+    text-decoration: none;
+}
+
+.ucam-forgot:hover {
+    color: var(--ux-blue-deeper);
+    text-decoration: underline;
+}
+
+.ucam-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.ucam-input-icon {
+    position: absolute;
+    left: 14px;
+    z-index: 2;
+    font-size: 15px;
+    color: var(--ux-soft);
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.ucam-input-wrap:focus-within .ucam-input-icon {
+    color: var(--ux-blue);
+}
+
+.ucam-input-wrap input,
+.ucam-input-wrap select {
+    width: 100%;
+    height: 46px;
+    padding: 0 16px 0 42px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ux-ink);
+    background-color: var(--ux-field-bg);
+    border: 1.5px solid var(--ux-line);
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.ucam-input-wrap input:hover,
+.ucam-input-wrap select:hover {
+    background-color: #fff;
+    border-color: var(--ux-soft);
+}
+
+.ucam-input-wrap input:focus,
+.ucam-input-wrap select:focus {
+    background-color: #fff;
+    border-color: var(--ux-blue);
+    box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
+}
+
+.ucam-input-wrap.has-toggle input {
+    padding-right: 44px;
+}
+
+.ucam-eye-toggle {
+    position: absolute;
+    right: 10px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 15px;
+    color: var(--ux-soft);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.ucam-eye-toggle:hover {
+    color: #1e293b;
+}
+
+.ucam-error {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #dc2626;
+}
+
+.ucam-help {
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: var(--ux-muted);
+}
+
+.ucam-help ul {
+    margin: 0;
+    padding-left: 16px;
+}
+
+/* ---------- Alerts, button, links ---------- */
+.ucam-alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+.ucam-form-panel .alert {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    border-radius: 8px;
+}
+
+.ucam-btn-primary {
+    width: 100%;
+    height: 46px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ucam-btn-primary:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+}
+
+.ucam-btn-primary:active {
+    transform: translateY(0);
+}
+
+.ucam-alt-link {
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--ux-muted);
+}
+
+.ucam-alt-link a {
+    font-weight: 600;
+    color: var(--ux-blue);
+    text-decoration: none;
+}
+
+.ucam-alt-link a:hover {
+    text-decoration: underline;
+}
+
+.ucam-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 16px;
+    font-size: 11.5px;
+    color: var(--ux-soft);
+    border-top: 1px solid #f1f5f9;
+}
+
+/* ---------- Small screens: single column ---------- */
+@media (max-width: 860px) {
+    .ucam-auth-card {
+        flex-direction: column;
+        max-width: 400px;
+        min-height: auto;
+    }
+
+    .ucam-brand-panel {
+        flex: none;
+        width: 100%;
+        padding: 26px 20px;
+    }
+
+    .ucam-logo-box {
+        width: 72px;
+        height: 72px;
+        margin-bottom: 12px;
+    }
+
+    .ucam-brand-university {
+        font-size: 18px;
+    }
+
+    .ucam-form-panel {
+        padding: 26px 22px;
+    }
+
+    .ucam-card-bottom {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
+
+/* ==========================================================
+   Part 2: app pages (header, navbar, cards, dashboards, profile)
+   ========================================================== */
+
+/* ---------- App page layout ---------- */
+body.ucam-app-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f6f7f7;
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ucam-main {
+    flex: 1;
+}
+
+.ucam-container {
+    max-width: 1140px;
+    margin: 32px auto 40px;
+    padding: 0 15px;
+}
+
+.ucam-messages {
+    margin: 20px auto -12px;
+}
+
+.ucam-narrow {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.ucam-narrow-sm {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* ---------- Header: logo + profile card ---------- */
+.ucam-header {
+    background: #fff;
+    border-top: 5px solid #433b20;
+}
+
+.ucam-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 85px;
+    padding: 6px 30px;
+}
+
+.ucam-banner-logo img {
+    display: block;
+    height: 72px;
+    width: auto;
+    max-width: 320px;
+    object-fit: contain;
+}
+
+.ucam-profile-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.ucam-profile-card:hover {
+    background: #fff;
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+}
+
+.ucam-profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.ucam-profile-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ucam-name-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ucam-profile-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #334155;
+    text-decoration: none;
+}
+
+.ucam-profile-name:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.ucam-name-sep {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+.ucam-profile-id {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0f2b48;
+}
+
+.ucam-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #dc2626;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.ucam-logout:hover {
+    color: #b91c1c;
+    background: #fecaca;
+    transform: translateY(-1px);
+}
+
+.ucam-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.ucam-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-radius: 6px;
+}
+
+.ucam-pill-blue {
+    color: #1e40af;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.ucam-pill-green {
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+/* header avatar */
+.ucam-avatar {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.ucam-avatar img,
+.ucam-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #3b82f6;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+}
+
+.ucam-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #0a2540 0%, #2563eb 100%);
+}
+
+.ucam-online-dot {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+/* ---------- Navbar ---------- */
+.ucam-nav {
+    position: relative;
+    z-index: 100;
+    background: linear-gradient(#fafafa, #eeeeee);
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 3px solid #1e3a8a;
+}
+
+.ucam-nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0 30px;
+    list-style: none;
+}
+
+.ucam-nav > ul > li > a {
+    display: block;
+    padding: 14px 22px;
+    font-size: 17px;
+    color: #1e3a8a;
+    text-decoration: none;
+}
+
+.ucam-nav > ul > li > a:hover {
+    background: #e4e7f2;
+}
+
+.ucam-nav > ul > li > a.active {
+    font-weight: 700;
+    color: #00008b;
+}
+
+.ucam-nav .dropdown-menu {
+    padding: 6px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+}
+
+.ucam-nav .dropdown-item {
+    padding: 8px 18px;
+    font-size: 14px;
+    color: #1e3a8a;
+}
+
+/* ---------- Footer ---------- */
+.ucam-footer {
+    width: 84%;
+    margin: 0 auto 24px;
+    padding-top: 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+    color: #94a3b8;
+    border-top: 1px solid #cbd5e1;
+}
+
+.ucam-footer strong {
+    color: #64748b;
+}
+
+/* ---------- Cards ---------- */
+.ucam-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.ucam-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 28px;
+    color: #fff;
+    background: linear-gradient(135deg, #0a2540 0%, #1e40af 100%);
+}
+
+.ucam-card-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.ucam-card-header p {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+    color: #bfdbfe;
+}
+
+.ucam-card-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+}
+
+.ucam-card-body {
+    padding: 28px;
+}
+
+/* ---------- Welcome card (dashboards) ---------- */
+.ucam-welcome-card {
+    max-width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.ucam-welcome-header {
+    padding: 38px 24px 32px;
+    color: #fff;
+    background: linear-gradient(135deg, #0a2540 0%, #1e40af 100%);
+}
+
+.ucam-crest {
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 16px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ucam-crest img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.ucam-welcome-header h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: #fff;
+}
+
+.ucam-welcome-header p {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    color: #bfdbfe;
+}
+
+.ucam-welcome-body {
+    padding: 36px 36px 28px;
+}
+
+.ucam-greeting {
+    margin-bottom: 22px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.ucam-highlight {
+    color: #2563eb;
+}
+
+.ucam-tip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    font-size: 13px;
+    text-align: left;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+.ucam-tip-icon {
+    flex-shrink: 0;
+    font-size: 22px;
+    color: #f59e0b;
+}
+
+/* ---------- Info grid (dashboards + profile) ---------- */
+.ucam-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 26px;
+    text-align: left;
+}
+
+.ucam-info-item {
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.ucam-info-item.full {
+    grid-column: 1 / -1;
+}
+
+.ucam-info-label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #64748b;
+}
+
+.ucam-info-value {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #0f172a;
+    word-break: break-word;
+}
+
+/* ---------- Contact strip ---------- */
+.ucam-contact-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+    padding: 20px 24px;
+    text-align: left;
+    background: #0a1e3a;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(10, 30, 58, 0.12);
+}
+
+.ucam-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ucam-contact-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.12);
+    border-radius: 8px;
+}
+
+.ucam-contact-text strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #fff;
+}
+
+.ucam-contact-text span {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ---------- Profile page ---------- */
+.ucam-profile-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 28px;
+}
+
+.ucam-profile-side {
+    text-align: center;
+}
+
+.ucam-avatar-lg {
+    width: 130px;
+    height: 130px;
+    display: block;
+    margin: 0 auto 14px;
+    border: 3px solid #3b82f6;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.ucam-avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #0a2540 0%, #2563eb 100%);
+}
+
+.ucam-profile-fullname {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ucam-role-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e40af;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 20px;
+}
+
+.ucam-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+/* ---------- Inline buttons ---------- */
+.ucam-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 22px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ucam-btn-blue {
+    color: #fff;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.ucam-btn-blue:hover {
+    color: #fff;
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+    transform: translateY(-1px);
+}
+
+.ucam-btn-outline {
+    color: #334155;
+    background: #fff;
+    border-color: #cbd5e1;
+}
+
+.ucam-btn-outline:hover {
+    color: #1e40af;
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+a.ucam-btn-primary {
+    color: #fff;
+    text-decoration: none;
+}
+
+a.ucam-btn-primary:hover {
+    color: #fff;
+}
+
+/* ---------- Forms inside cards (Bootstrap form-control) ---------- */
+.ucam-form .form-control:not([type="file"]) {
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: #0f172a;
+    background-color: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.ucam-form input.form-control:not([type="file"]) {
+    height: 46px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.ucam-form .form-control:focus {
+    background-color: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
+}
+
+/* ---------- 403 page ---------- */
+.ucam-error-page {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.ucam-error-code {
+    font-size: 84px;
+    font-weight: 800;
+    line-height: 1;
+    color: #1e40af;
+}
+
+.ucam-error-page p {
+    margin: 12px 0 24px;
+    font-size: 16px;
+    color: #64748b;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 991px) {
+    .ucam-banner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    .ucam-banner-logo {
+        text-align: center;
+    }
+
+    .ucam-banner-logo img {
+        display: inline-block;
+        height: 48px;
+        max-width: 240px;
+    }
+
+    .ucam-profile-card {
+        width: 100%;
+    }
+
+    .ucam-profile-details {
+        flex: 1 1 auto;
+        align-items: flex-start;
+        order: 1;
+        min-width: 0;
+    }
+
+    .ucam-avatar {
+        order: -1;
+    }
+
+    .ucam-profile-top {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .ucam-pills {
+        justify-content: flex-start;
+    }
+
+    .ucam-nav > ul {
+        padding: 0 8px;
+    }
+
+    .ucam-nav > ul > li > a {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ucam-contact-strip {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .ucam-welcome-body {
+        padding: 24px 16px 20px;
+    }
+
+    .ucam-profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .ucam-card-body {
+        padding: 20px 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .ucam-info-grid {
+        grid-template-columns: 1fr;
+    }
+}

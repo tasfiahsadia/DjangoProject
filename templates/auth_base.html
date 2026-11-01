@@ -1,11 +1,65 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block body_class %}auth-page{% endblock %}
+{% block body_class %}ucam-auth-page{% endblock %}
 {% block header %}{% endblock %}
+{% block messages %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block main %}
-<main class="auth-wrapper">
-    {% block auth_content %}{% endblock %}
+<main class="ucam-auth-wrapper">
+    <div class="ucam-auth-card">
+
+        <div class="ucam-brand-panel">
+            <div class="ucam-brand-content">
+                <div class="ucam-logo-box">
+                    <img src="{% static 'images/uap.png' %}" alt="University of Asia Pacific">
+                </div>
+                <h2 class="ucam-brand-university">University of Asia Pacific</h2>
+                <div class="ucam-brand-divider"></div>
+                <h3 class="ucam-brand-title">UAP Synergy</h3>
+                <p class="ucam-brand-desc">Connect. Research. Collaborate.</p>
+                <div class="ucam-badge-pill"><i class="bi bi-people-fill"></i> Students &amp; Faculty</div>
+            </div>
+        </div>
+
+        <div class="ucam-form-panel">
+            <div class="ucam-form-header">
+                <h1 class="ucam-form-title">{% block auth_title %}{% endblock %}</h1>
+                <p class="ucam-form-subtitle">{% block auth_subtitle %}{% endblock %}</p>
+            </div>
+
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+            {% endfor %}
+
+            {% block auth_content %}{% endblock %}
+
+            <div class="ucam-card-bottom">
+                <span>&copy; 2026 UAP Synergy. All rights reserved.</span>
+                <span>CSE 302 course project</span>
+            </div>
+        </div>
+
+    </div>
 </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Show / hide password when the eye button is clicked
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.ucam-eye-toggle');
+        if (!btn) return;
+        var input = btn.parentElement.querySelector('input');
+        var icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    });
+</script>
 {% endblock %}
