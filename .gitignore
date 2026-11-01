@@ -14,3 +14,9 @@ media/
 
 # PyCharm
 .idea/
+
+# helper files (not part of the project)
+accounts_code.txt
+structure.txt
+merge_code.py
+.idea/
