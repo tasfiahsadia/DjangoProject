@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -39,6 +39,17 @@ class StudentProfile(models.Model):
     batch = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     profile_picture = models.ImageField(upload_to='accounts/profile_pictures/', blank=True)
     bio = models.TextField(blank=True)
+    semester = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(8)],
+    )
+    interests = models.CharField(max_length=255, blank=True)
+    cv = models.FileField(
+        upload_to='accounts/cvs/',
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
 
     def __str__(self):
         return f'{self.user.username} ({self.student_id})'
