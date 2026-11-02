@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Opportunities{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <h1>Browse Opportunities</h1>
+    <span class="text-muted">{{ opportunities|length }} found</span>
+</div>
+
+<form method="get" class="ucam-filter ucam-form">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="ucam-label mb-1" for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
+            {{ form.q }}
+        </div>
+        <div class="col-md-3">
+            <label class="ucam-label mb-1" for="{{ form.opportunity_type.id_for_label }}">{{ form.opportunity_type.label }}</label>
+            {{ form.opportunity_type }}
+        </div>
+        <div class="col-md-3">
+            <label class="ucam-label mb-1" for="{{ form.department.id_for_label }}">{{ form.department.label }}</label>
+            {{ form.department }}
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="ucam-btn ucam-btn-blue"><i class="bi bi-search"></i> Search</button>
+            <a href="{% url 'opportunities:list' %}" class="ucam-btn ucam-btn-outline">Reset</a>
+        </div>
+    </div>
+</form>
+
+{% if opportunities %}
+<div class="row row-cols-1 row-cols-md-2 g-3">
+    {% for opp in opportunities %}
+    <div class="col">
+        {% include 'partials/opportunity_card.html' %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-search"></i>
+    No opportunities found. Try a different search or filter.
+</div>
+{% endif %}
+{% endblock %}

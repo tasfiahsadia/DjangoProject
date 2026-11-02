@@ -1,0 +1,40 @@
+<div class="ucam-opp">
+    <div class="d-flex justify-content-between align-items-start gap-2">
+        <a href="{{ opp.get_absolute_url }}" class="ucam-opp-title">{{ opp.title }}</a>
+        {% if user.role == 'STUDENT' %}
+        <form method="post" action="{% url 'opportunities:toggle_save' opp.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit" class="ucam-save-btn{% if opp.pk in saved_ids %} saved{% endif %}" title="Save / unsave">
+                <i class="bi {% if opp.pk in saved_ids %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-2">
+        <span class="ucam-badge ucam-badge-type">{{ opp.get_opportunity_type_display }}</span>
+        <span class="ucam-badge ucam-badge-cat">{{ opp.category }}</span>
+    </div>
+
+    <div class="ucam-opp-meta">
+        <div><strong>Posted by:</strong> {{ opp.faculty_name }} (Faculty department: {{ opp.faculty.department.code }})</div>
+        <div><strong>Open to:</strong> {{ opp.departments_display }}</div>
+        <div><strong>Positions:</strong> {{ opp.positions }}</div>
+    </div>
+
+    <div class="ucam-opp-foot">
+        <span class="small text-muted">
+            <i class="bi bi-calendar-event"></i> {{ opp.deadline|date:"d M Y" }}
+            &bull;
+            {% if opp.days_left < 0 %}
+            <span class="text-danger">Expired</span>
+            {% elif opp.days_left == 0 %}
+            Last day
+            {% else %}
+            {{ opp.days_left }} days left
+            {% endif %}
+        </span>
+        <a href="{{ opp.get_absolute_url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm">View details</a>
+    </div>
+</div>

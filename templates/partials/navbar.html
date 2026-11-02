@@ -1,18 +1,30 @@
-{% with url_name=request.resolver_match.url_name %}
+{% with url_name=request.resolver_match.url_name app_name=request.resolver_match.app_name %}
 <nav class="ucam-nav" aria-label="Main menu">
     <ul>
         <li>
             <a href="{% url 'accounts:dashboard' %}"
                class="{% if url_name == 'dashboard' or url_name == 'student_dashboard' or url_name == 'faculty_dashboard' %}active{% endif %}">Home</a>
         </li>
+
         <li>
             <a href="{% url 'accounts:profile' %}"
                class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>
         </li>
-        <li>
-            <a href="{% url 'accounts:password_change' %}"
-               class="{% if url_name == 'password_change' %}active{% endif %}">Change Password</a>
+
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle {% if app_name == 'opportunities' %}active{% endif %}"
+               data-bs-toggle="dropdown" role="button" aria-expanded="false">Opportunities</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'opportunities:list' %}">Browse opportunities</a></li>
+                {% if user.role == 'FACULTY' %}
+                <li><a class="dropdown-item" href="{% url 'opportunities:mine' %}">My opportunities</a></li>
+                <li><a class="dropdown-item" href="{% url 'opportunities:create' %}">Post new opportunity</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'opportunities:saved' %}">Saved opportunities</a></li>
+                {% endif %}
+            </ul>
         </li>
+
     </ul>
 </nav>
 {% endwith %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Saved Opportunities{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <h1>Saved Opportunities</h1>
+    <a href="{% url 'opportunities:list' %}" class="ucam-btn ucam-btn-outline">
+        <i class="bi bi-search"></i> Browse more
+    </a>
+</div>
+
+{% if saved_items %}
+<div class="row row-cols-1 row-cols-md-2 g-3">
+    {% for item in saved_items %}
+    <div class="col">
+        {% include 'partials/opportunity_card.html' with opp=item.opportunity %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-heart"></i>
+    You have not saved any opportunity yet.
+</div>
+{% endif %}
+{% endblock %}
