@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}{{ opportunity.title }}{% endblock %}
 
 {% block content %}
@@ -29,7 +28,7 @@
                     <span class="ucam-info-value">{{ opportunity.faculty_name }}</span>
                 </div>
                 <div class="ucam-info-item">
-                    <span class="ucam-info-label">Faculty department</span>
+                    <span class="ucam-info-label">Faculty Department</span>
                     <span class="ucam-info-value">{{ opportunity.faculty.department.name }} ({{ opportunity.faculty.department.code }})</span>
                 </div>
                 <div class="ucam-info-item full">

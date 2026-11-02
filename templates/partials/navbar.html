@@ -6,11 +6,6 @@
                class="{% if url_name == 'dashboard' or url_name == 'student_dashboard' or url_name == 'faculty_dashboard' %}active{% endif %}">Home</a>
         </li>
 
-        <li>
-            <a href="{% url 'accounts:profile' %}"
-               class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>
-        </li>
-
         <li class="dropdown">
             <a href="#" class="dropdown-toggle {% if app_name == 'opportunities' %}active{% endif %}"
                data-bs-toggle="dropdown" role="button" aria-expanded="false">Opportunities</a>
@@ -23,6 +18,11 @@
                 <li><a class="dropdown-item" href="{% url 'opportunities:saved' %}">Saved opportunities</a></li>
                 {% endif %}
             </ul>
+        </li>
+
+        <li>
+            <a href="{% url 'accounts:profile' %}"
+               class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>
         </li>
 
     </ul>
