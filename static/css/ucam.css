@@ -1130,3 +1130,233 @@ a.ucam-btn-primary:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================
+   Part 3: opportunities
+   ========================================================== */
+
+.ucam-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ucam-page-head h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* badges */
+.ucam-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 20px;
+}
+
+.ucam-badge-type { color: #1e40af; background: #eff6ff; border-color: #bfdbfe; }
+.ucam-badge-cat { color: #475569; background: #f1f5f9; border-color: #e2e8f0; }
+.ucam-badge-draft { color: #92400e; background: #fef3c7; border-color: #fde68a; }
+.ucam-badge-open { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
+.ucam-badge-closed { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
+
+/* extra buttons */
+.ucam-btn.ucam-btn-sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12.5px;
+}
+
+.ucam-btn-danger {
+    color: #dc2626;
+    background: #fff;
+    border-color: #fecaca;
+}
+
+.ucam-btn-danger:hover {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+/* select boxes inside card forms */
+.ucam-form .form-select {
+    height: 46px;
+    padding: 0 14px;
+    font-size: 13.5px;
+    color: #0f172a;
+    background-color: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.ucam-form .form-select:focus {
+    background-color: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
+}
+
+/* department checkboxes */
+#id_target_departments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+#id_target_departments label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+#id_target_departments input {
+    width: 16px;
+    height: 16px;
+}
+
+/* filter bar */
+.ucam-filter {
+    margin-bottom: 22px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+/* opportunity card */
+.ucam-opp {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.ucam-opp:hover {
+    box-shadow: 0 8px 26px -4px rgba(37, 99, 235, 0.16);
+    transform: translateY(-2px);
+}
+
+.ucam-opp-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    text-decoration: none;
+}
+
+.ucam-opp-title:hover {
+    color: #2563eb;
+}
+
+.ucam-opp-meta {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.ucam-opp-meta div {
+    margin-bottom: 4px;
+}
+
+.ucam-opp-meta strong {
+    color: #334155;
+}
+
+.ucam-opp-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.ucam-save-btn {
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+    color: #94a3b8;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.ucam-save-btn:hover,
+.ucam-save-btn.saved {
+    color: #dc2626;
+}
+
+/* detail page */
+.ucam-section-title {
+    margin: 26px 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ucam-resource {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.ucam-resource-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.ucam-resource-file {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* table and empty state */
+.ucam-table th {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    background: #f8fafc;
+}
+
+.ucam-empty {
+    padding: 48px 20px;
+    text-align: center;
+    color: #64748b;
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
+}
+
+.ucam-empty i {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 34px;
+    color: #94a3b8;
+}

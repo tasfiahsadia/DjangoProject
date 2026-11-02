@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Resource{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow-sm">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-paperclip"></i></div>
+            <div>
+                <h1>Add Resource File</h1>
+                <p>{{ opportunity.title }}</p>
+            </div>
+        </div>
+        <div class="ucam-card-body">
+            <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.title %}
+                {% include 'partials/form_field.html' with field=form.file %}
+                <p class="ucam-help">PDF, DOC, DOCX, PPT, PPTX, TXT or ZIP. Maximum 5 MB.</p>
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-upload"></i> Upload
+                    </button>
+                    <a href="{{ opportunity.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

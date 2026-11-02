@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if opportunity %}Edit Opportunity{% else %}Post Opportunity{% endif %}{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-megaphone-fill"></i></div>
+            <div>
+                <h1>{% if opportunity %}Edit Opportunity{% else %}Post New Opportunity{% endif %}</h1>
+                <p>Fill in the details students will see</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+
+                {% include 'partials/form_field.html' with field=form.title %}
+
+                <div class="row">
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.opportunity_type %}</div>
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.category %}</div>
+                </div>
+
+                {% include 'partials/form_field.html' with field=form.description %}
+                {% include 'partials/form_field.html' with field=form.required_skills %}
+
+                <div class="row">
+                    <div class="col-md-4">{% include 'partials/form_field.html' with field=form.positions %}</div>
+                    <div class="col-md-4">{% include 'partials/form_field.html' with field=form.duration %}</div>
+                    <div class="col-md-4">{% include 'partials/form_field.html' with field=form.deadline %}</div>
+                </div>
+
+                {% include 'partials/form_field.html' with field=form.target_departments %}
+                {% include 'partials/form_field.html' with field=form.status %}
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i> Save
+                    </button>
+                    <a href="{% url 'opportunities:mine' %}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

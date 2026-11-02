@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}My Opportunities{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <h1>My Opportunities</h1>
+    <a href="{% url 'opportunities:create' %}" class="ucam-btn ucam-btn-blue">
+        <i class="bi bi-plus-circle-fill"></i> Post new opportunity
+    </a>
+</div>
+
+{% if opportunities %}
+<div class="ucam-card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 ucam-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Open to</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for opp in opportunities %}
+                <tr>
+                    <td><a href="{{ opp.get_absolute_url }}" class="ucam-opp-title">{{ opp.title }}</a></td>
+                    <td>{{ opp.get_opportunity_type_display }}</td>
+                    <td>{{ opp.departments_display }}</td>
+                    <td>{{ opp.deadline|date:"d M Y" }}</td>
+                    <td>
+                        <span class="ucam-badge ucam-badge-{{ opp.status|lower }}">{{ opp.get_status_display }}</span>
+                        {% if opp.status == 'OPEN' and not opp.is_open %}
+                        <span class="ucam-badge ucam-badge-closed">Expired</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <div class="d-inline-flex gap-1">
+                            <a href="{{ opp.get_absolute_url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm">View</a>
+                            <a href="{% url 'opportunities:edit' opp.pk %}" class="ucam-btn ucam-btn-outline ucam-btn-sm">Edit</a>
+                            {% if opp.status == 'DRAFT' %}
+                            <form method="post" action="{% url 'opportunities:publish' opp.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="ucam-btn ucam-btn-blue ucam-btn-sm">Publish</button>
+                            </form>
+                            {% endif %}
+                            <a href="{% url 'opportunities:delete' opp.pk %}" class="ucam-btn ucam-btn-danger ucam-btn-sm">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-inbox"></i>
+    You have not posted any opportunity yet.
+</div>
+{% endif %}
+{% endblock %}

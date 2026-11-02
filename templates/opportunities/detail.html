@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ opportunity.title }}{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-lightbulb-fill"></i></div>
+            <div>
+                <h1>{{ opportunity.title }}</h1>
+                <p>Posted by {{ opportunity.faculty_name }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="ucam-badge ucam-badge-{{ opportunity.status|lower }}">{{ opportunity.get_status_display }}</span>
+                {% if opportunity.status == 'OPEN' and not opportunity.is_open %}
+                <span class="ucam-badge ucam-badge-closed">Deadline passed</span>
+                {% endif %}
+                <span class="ucam-badge ucam-badge-type">{{ opportunity.get_opportunity_type_display }}</span>
+                <span class="ucam-badge ucam-badge-cat">{{ opportunity.category }}</span>
+            </div>
+
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Posted by</span>
+                    <span class="ucam-info-value">{{ opportunity.faculty_name }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Faculty department</span>
+                    <span class="ucam-info-value">{{ opportunity.faculty.department.name }} ({{ opportunity.faculty.department.code }})</span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Open to departments</span>
+                    <span class="ucam-info-value">{{ opportunity.departments_display }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Positions</span>
+                    <span class="ucam-info-value">{{ opportunity.positions }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Duration</span>
+                    <span class="ucam-info-value">{{ opportunity.duration|default:"-" }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Deadline</span>
+                    <span class="ucam-info-value">
+                        {{ opportunity.deadline|date:"d M Y" }}
+                        {% if opportunity.days_left < 0 %}
+                        (expired)
+                        {% elif opportunity.days_left == 0 %}
+                        (last day)
+                        {% else %}
+                        ({{ opportunity.days_left }} days left)
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Required skills</span>
+                    <span class="ucam-info-value">{{ opportunity.required_skills|default:"-" }}</span>
+                </div>
+            </div>
+
+            <h2 class="ucam-section-title">Description</h2>
+            {{ opportunity.description|linebreaks }}
+
+            <h2 class="ucam-section-title">Resources</h2>
+            {% for resource in opportunity.resources.all %}
+            <div class="ucam-resource">
+                <div>
+                    <div class="ucam-resource-name"><i class="bi bi-file-earmark-text"></i> {{ resource.title }}</div>
+                    <div class="ucam-resource-file">{{ resource.filename }} &bull; {{ resource.uploaded_at|date:"d M Y" }}</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ resource.file.url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm" download>
+                        <i class="bi bi-download"></i> Download
+                    </a>
+                    {% if is_owner %}
+                    <form method="post" action="{% url 'opportunities:resource_delete' resource.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="ucam-btn ucam-btn-danger ucam-btn-sm">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No files attached.</p>
+            {% endfor %}
+
+            <div class="ucam-actions">
+                {% if is_owner %}
+                <a href="{% url 'opportunities:edit' opportunity.pk %}" class="ucam-btn ucam-btn-outline">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                {% if opportunity.status == 'DRAFT' %}
+                <form method="post" action="{% url 'opportunities:publish' opportunity.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="ucam-btn ucam-btn-blue"><i class="bi bi-send-fill"></i> Publish</button>
+                </form>
+                {% endif %}
+                <a href="{% url 'opportunities:resource_add' opportunity.pk %}" class="ucam-btn ucam-btn-outline">
+                    <i class="bi bi-paperclip"></i> Add resource
+                </a>
+                <a href="{% url 'opportunities:delete' opportunity.pk %}" class="ucam-btn ucam-btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+                {% endif %}
+
+                {% if user.role == 'STUDENT' %}
+                <form method="post" action="{% url 'opportunities:toggle_save' opportunity.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="ucam-btn ucam-btn-outline">
+                        {% if is_saved %}
+                        <i class="bi bi-heart-fill text-danger"></i> Unsave
+                        {% else %}
+                        <i class="bi bi-heart"></i> Save
+                        {% endif %}
+                    </button>
+                </form>
+                {% endif %}
+
+                {% comment %} Apply button will be added here when we build the applications app. {% endcomment %}
+
+                {% if is_owner %}
+                <a href="{% url 'opportunities:mine' %}" class="ucam-btn ucam-btn-outline">Back to my list</a>
+                {% else %}
+                <a href="{% url 'opportunities:list' %}" class="ucam-btn ucam-btn-outline">Back to browse</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
