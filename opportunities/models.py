@@ -1,5 +1,4 @@
 import os
-
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
@@ -12,7 +11,7 @@ class Opportunity(models.Model):
     class OpportunityType(models.TextChoices):
         RESEARCH = 'RESEARCH', 'Research'
         THESIS = 'THESIS', 'Thesis'
-        COURSE_PROJECT = 'COURSE_PROJECT', 'Course Project'
+        COURSE_PROJECT = 'COURSE_PROJECT', 'Project'
         COMPETITION = 'COMPETITION', 'Competition'
 
     class Status(models.TextChoices):
