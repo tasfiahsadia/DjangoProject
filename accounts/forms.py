@@ -116,12 +116,28 @@ class UserNameForm(forms.ModelForm):
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = StudentProfile
-        fields = ('profile_picture', 'bio')
+        fields = ('profile_picture', 'bio', 'semester', 'interests', 'cv')
+        labels = {
+            'semester': 'Current semester',
+            'cv': 'CV (PDF, max 5 MB)',
+        }
+        help_texts = {
+            'interests': 'Separate with commas.',
+        }
         widgets = {
             'profile_picture': forms.ClearableFileInput(
                 attrs={'class': 'form-control', 'accept': 'image/*'}
             ),
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'semester': forms.NumberInput(
+                attrs={'class': 'form-control', 'min': 1, 'max': 8, 'placeholder': 'e.g. 5'}
+            ),
+            'interests': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'e.g. Machine Learning, Web Development, Python'}
+            ),
+            'cv': forms.ClearableFileInput(
+                attrs={'class': 'form-control', 'accept': 'application/pdf,.pdf'}
+            ),
         }
 
     def clean_profile_picture(self):
@@ -131,10 +147,17 @@ class StudentProfileForm(forms.ModelForm):
             raise forms.ValidationError('Image must be 2 MB or smaller.')
         return picture
 
+    def clean_cv(self):
+        cv = self.cleaned_data.get('cv')
+        if isinstance(cv, UploadedFile) and cv.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('CV must be 5 MB or smaller.')
+        return cv
+
 
 class FacultyProfileForm(StudentProfileForm):
     class Meta(StudentProfileForm.Meta):
         model = FacultyProfile
+        fields = ('profile_picture', 'bio')
 
 
 class StyledPasswordChangeForm(PasswordChangeForm):

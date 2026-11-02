@@ -49,6 +49,22 @@
                             <span class="ucam-info-label">Batch</span>
                             <span class="ucam-info-value">{{ profile.batch }}</span>
                         </div>
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">Semester</span>
+                            <span class="ucam-info-value">{{ profile.semester|default:"-" }}</span>
+                        </div>
+                        <div class="ucam-info-item">
+                            <span class="ucam-info-label">CV</span>
+                            <span class="ucam-info-value">
+                                {% if profile.cv %}
+                                <a href="{{ profile.cv.url }}" target="_blank">View CV (PDF)</a>
+                                {% else %}-{% endif %}
+                            </span>
+                        </div>
+                        <div class="ucam-info-item full">
+                            <span class="ucam-info-label">Interests</span>
+                            <span class="ucam-info-value">{{ profile.interests|default:"-" }}</span>
+                        </div>
                         {% else %}
                         <div class="ucam-info-item">
                             <span class="ucam-info-label">Designation</span>

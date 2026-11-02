@@ -26,9 +26,20 @@
                 </div>
                 {% include 'partials/form_field.html' with field=profile_form.profile_picture %}
                 {% include 'partials/form_field.html' with field=profile_form.bio %}
+                {% if user.role == 'STUDENT' %}
+                <div class="row">
+                    <div class="col-md-4">
+                        {% include 'partials/form_field.html' with field=profile_form.semester %}
+                    </div>
+                    <div class="col-md-8">
+                        {% include 'partials/form_field.html' with field=profile_form.interests %}
+                    </div>
+                </div>
+                {% include 'partials/form_field.html' with field=profile_form.cv %}
+                {% endif %}
 
                 <p class="ucam-help">
-                    Department and academic details can only be changed by the administrator.
+                    Department and other official details (Student ID, batch, designation) can only be changed by the administrator.
                 </p>
 
                 <div class="ucam-actions">

@@ -93,6 +93,7 @@ def profile_edit(request):
     else:
         profile_form_class = StudentProfileForm
     old_picture = profile.profile_picture.name
+    old_cv = profile.cv.name if hasattr(profile, 'cv') else ''
 
     if request.method == 'POST':
         user_form = UserNameForm(request.POST, instance=request.user)
@@ -100,9 +101,11 @@ def profile_edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            # Delete the old picture file if it was replaced or removed.
+
             if old_picture and old_picture != profile.profile_picture.name:
                 profile.profile_picture.storage.delete(old_picture)
+            if old_cv and old_cv != profile.cv.name:
+                profile.cv.storage.delete(old_cv)
             messages.success(request, 'Your profile was updated.')
             return redirect('accounts:profile')
     else:
