@@ -1360,3 +1360,8 @@ a.ucam-btn-primary:hover {
     font-size: 34px;
     color: #94a3b8;
 }
+
+/* filter bar: buttons same height as the inputs */
+.ucam-filter .ucam-btn {
+    height: 46px;
+}
