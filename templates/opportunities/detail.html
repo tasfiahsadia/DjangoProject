@@ -121,8 +121,18 @@
                 </form>
                 {% endif %}
 
-                {% comment %} Apply button will be added here when we build the applications app. {% endcomment %}
-
+                {% if user.role == 'STUDENT' and opportunity.status != 'DRAFT' %}
+                    {% if my_application %}
+                    <a href="{% url 'applications:detail' my_application.pk %}" class="ucam-btn ucam-btn-outline">
+                        <i class="bi bi-file-earmark-text"></i> My application ({{ my_application.get_status_display }})
+                    </a>
+                    {% elif opportunity.is_open %}
+                    <a href="{% url 'applications:apply' opportunity.pk %}" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-send-fill"></i> Apply
+                    </a>
+                    {% endif %}
+                {% endif %}
+            
                 {% if is_owner %}
                 <a href="{% url 'opportunities:mine' %}" class="ucam-btn ucam-btn-outline">Back to my list</a>
                 {% else %}

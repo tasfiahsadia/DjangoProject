@@ -15,6 +15,13 @@
         <div class="ucam-card-body">
             <p>Are you sure you want to delete <strong>{{ opportunity.title }}</strong>?
                Its uploaded files and saved entries will also be removed.</p>
+            {% if opportunity.applications.count %}
+            <div class="alert alert-warning">
+                This opportunity has <strong>{{ opportunity.applications.count }}</strong>
+                application{{ opportunity.applications.count|pluralize }}.
+                They will be permanently deleted along with their attached files and evaluations.
+            </div>
+            {% endif %}
             <form method="post">
                 {% csrf_token %}
                 <div class="ucam-actions">

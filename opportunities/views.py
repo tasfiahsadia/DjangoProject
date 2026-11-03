@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -29,8 +29,10 @@ def get_saved_ids(user):
 
 @role_required(User.Role.FACULTY)
 def my_opportunities(request):
-    opportunities = request.user.profile.opportunities.prefetch_related(
-        'target_departments'
+    opportunities = (
+        request.user.profile.opportunities
+        .prefetch_related('target_departments')
+        .annotate(application_count=Count('applications'))
     )
     return render(request, 'opportunities/mine.html', {'opportunities': opportunities})
 
@@ -184,10 +186,15 @@ def opportunity_detail(request, pk):
     if opportunity.status == Opportunity.Status.DRAFT and not is_owner:
         raise Http404
 
+    my_application = None
+    if request.user.role == User.Role.STUDENT and profile is not None:
+        my_application = profile.applications.filter(opportunity=opportunity).first()
+
     return render(request, 'opportunities/detail.html', {
         'opportunity': opportunity,
         'is_owner': is_owner,
         'is_saved': pk in get_saved_ids(request.user),
+        'my_application': my_application,
     })
 
 

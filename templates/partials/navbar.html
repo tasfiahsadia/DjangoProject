@@ -20,6 +20,13 @@
             </ul>
         </li>
 
+        {% if user.role == 'STUDENT' %}
+        <li>
+            <a href="{% url 'applications:mine' %}"
+               class="{% if app_name == 'applications' %}active{% endif %}">My Applications</a>
+        </li>
+        {% endif %}
+
         <li>
             <a href="{% url 'accounts:profile' %}"
                class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>

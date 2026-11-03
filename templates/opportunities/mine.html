@@ -40,6 +40,9 @@
                     <td class="text-end">
                         <div class="d-inline-flex gap-1">
                             <a href="{{ opp.get_absolute_url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm">View</a>
+                            <a href="{% url 'applications:opportunity_applications' opp.pk %}" class="ucam-btn ucam-btn-outline ucam-btn-sm">
+                                Applications ({{ opp.application_count }})
+                            </a>
                             <a href="{% url 'opportunities:edit' opp.pk %}" class="ucam-btn ucam-btn-outline ucam-btn-sm">Edit</a>
                             {% if opp.status == 'DRAFT' %}
                             <form method="post" action="{% url 'opportunities:publish' opp.pk %}">
