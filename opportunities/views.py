@@ -1,32 +1,16 @@
-from functools import wraps
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
-
+from accounts.decorators import role_required
 from accounts.models import User
 
 from .forms import OpportunityFilterForm, OpportunityForm, OpportunityResourceForm
 from .models import Opportunity, OpportunityResource, SavedOpportunity
-
-
-# ---------- Helpers ----------
-
-def role_required(role):
-    """Allow only logged-in users with the given role (STUDENT or FACULTY)."""
-    def decorator(view_func):
-        @wraps(view_func)
-        def wrapper(request, *args, **kwargs):
-            if request.user.role != role or request.user.profile is None:
-                raise PermissionDenied
-            return view_func(request, *args, **kwargs)
-        return login_required(wrapper)
-    return decorator
 
 
 def get_own_opportunity(request, pk):
@@ -42,8 +26,6 @@ def get_saved_ids(user):
         )
     return set()
 
-
-# ---------- Faculty: create / read / update / delete ----------
 
 @role_required(User.Role.FACULTY)
 def my_opportunities(request):
@@ -65,7 +47,6 @@ def opportunity_create(request):
             messages.success(request, 'Opportunity created.')
             return redirect(opportunity)
     else:
-        # Pre-tick the faculty's own department (they can change it).
         form = OpportunityForm(
             initial={'target_departments': [request.user.profile.department_id]}
         )
@@ -92,9 +73,11 @@ def opportunity_edit(request, pk):
 def opportunity_delete(request, pk):
     opportunity = get_own_opportunity(request, pk)
     if request.method == 'POST':
-        # Remove the uploaded files from disk first, then the database rows.
         for resource in opportunity.resources.all():
             resource.file.delete(save=False)
+        for application in opportunity.applications.prefetch_related('attachments'):
+            for attachment in application.attachments.all():
+                attachment.file.delete(save=False)
         opportunity.delete()
         messages.success(request, 'Opportunity deleted.')
         return redirect('opportunities:mine')
@@ -117,8 +100,6 @@ def opportunity_publish(request, pk):
         messages.success(request, 'Opportunity published. Students can now see it.')
     return redirect(opportunity)
 
-
-# ---------- Faculty: resource files (media upload / delete) ----------
 
 @role_required(User.Role.FACULTY)
 def resource_add(request, pk):
@@ -152,8 +133,6 @@ def resource_delete(request, pk):
     messages.success(request, 'File deleted.')
     return redirect(opportunity)
 
-
-# ---------- Everyone logged in: browse and details ----------
 
 @login_required
 def opportunity_list(request):
@@ -201,7 +180,7 @@ def opportunity_detail(request, pk):
         and profile is not None
         and opportunity.faculty_id == profile.pk
     )
-    # A draft is visible only to the faculty who wrote it.
+
     if opportunity.status == Opportunity.Status.DRAFT and not is_owner:
         raise Http404
 
@@ -211,8 +190,6 @@ def opportunity_detail(request, pk):
         'is_saved': pk in get_saved_ids(request.user),
     })
 
-
-# ---------- Student: save / unsave and saved list ----------
 
 @role_required(User.Role.STUDENT)
 @require_POST
