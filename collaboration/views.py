@@ -1,3 +1,5 @@
+from notifications.models import Notification
+from notifications.utils import notify
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -78,6 +80,14 @@ def collaboration_start(request, opportunity_pk):
         messages.info(request, 'A collaboration already exists for this opportunity.')
         return redirect(opportunity)
 
+    for application in accepted.select_related('student__user'):
+        notify(
+            recipient=application.student.user,
+            title='Collaboration started',
+            message=f'You are now a member of "{collaboration.title}".',
+            notification_type=Notification.Type.COLLABORATION,
+            link=collaboration.get_absolute_url(),
+        )
     messages.success(request, 'Collaboration started with the accepted students.')
     return redirect(collaboration)
 
@@ -148,8 +158,14 @@ def member_add(request, pk):
     if request.method == 'POST':
         form = AddMemberForm(request.POST, collaboration=collaboration)
         if form.is_valid():
-            CollaborationMember.objects.create(
-                collaboration=collaboration, student=form.cleaned_data['student']
+            student = form.cleaned_data['student']
+            CollaborationMember.objects.create(collaboration=collaboration, student=student)
+            notify(
+                recipient=student.user,
+                title='Added to a collaboration',
+                message=f'You were added to "{collaboration.title}".',
+                notification_type=Notification.Type.COLLABORATION,
+                link=collaboration.get_absolute_url(),
             )
             messages.success(request, 'Member added.')
             return redirect(collaboration)

@@ -1,3 +1,7 @@
+from django.urls import reverse
+
+from notifications.models import Notification
+from notifications.utils import notify
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from django.db.models import Count
@@ -102,6 +106,17 @@ def apply(request, opportunity_pk):
             except IntegrityError:
                 messages.info(request, 'You have already applied to this opportunity.')
                 return redirect(opportunity)
+
+            notify(
+                recipient=opportunity.faculty.user,
+                title='New application received',
+                message=(
+                    f'{request.user.get_full_name() or request.user.username} '
+                    f'applied for "{opportunity.title}".'
+                ),
+                notification_type=Notification.Type.APPLICATION,
+                link=reverse('applications:review', args=[application.pk]),
+            )
             messages.success(request, 'Your application was submitted.')
             return redirect('applications:detail', pk=application.pk)
     else:
@@ -162,6 +177,16 @@ def application_withdraw(request, pk):
     else:
         application.status = Application.Status.WITHDRAWN
         application.save(update_fields=['status', 'updated_at'])
+        notify(
+            recipient=application.opportunity.faculty.user,
+            title='Application withdrawn',
+            message=(
+                f'{request.user.get_full_name() or request.user.username} '
+                f'withdrew the application for "{application.opportunity.title}".'
+            ),
+            notification_type=Notification.Type.APPLICATION,
+            link=reverse('applications:review', args=[application.pk]),
+        )
         messages.success(request, 'Your application was withdrawn.')
     return redirect('applications:detail', pk=application.pk)
 
@@ -273,6 +298,16 @@ def application_review(request, pk):
                 form.add_error(None, str(error))
             else:
                 messages.success(request, 'Evaluation saved.')
+                notify(
+                    recipient=application.student.user,
+                    title='Your application was evaluated',
+                    message=(
+                        f'Your application for "{application.opportunity.title}" '
+                        f'was {form.instance.get_decision_display().lower()}.'
+                    ),
+                    notification_type=Notification.Type.EVALUATION,
+                    link=reverse('applications:detail', args=[application.pk]),
+                )
                 already_member = CollaborationMember.objects.filter(
                     collaboration__opportunity=application.opportunity,
                     student=application.student,
