@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('opportunities/', include('opportunities.urls')),
     path('applications/', include('applications.urls')),
+    path('collaborations/', include('collaboration.urls')),
 ]
 
 if settings.DEBUG:
