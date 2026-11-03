@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Add Member{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow-sm">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-person-plus-fill"></i></div>
+            <div>
+                <h1>Add Member</h1>
+                <p>{{ collaboration.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            {% if form.fields.student.queryset.exists %}
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.student %}
+                <p class="ucam-help">Only students whose application you accepted are listed.</p>
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i> Add
+                    </button>
+                    <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-secondary">
+                No accepted student is waiting to be added. Accept an application first.
+            </div>
+            <div class="ucam-actions">
+                <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Back</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

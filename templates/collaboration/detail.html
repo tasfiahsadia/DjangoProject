@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}{{ collaboration.title }}{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-people-fill"></i></div>
+            <div>
+                <h1>{{ collaboration.title }}</h1>
+                <p>Led by {{ collaboration.faculty_name }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="ucam-badge ucam-badge-{{ collaboration.status|lower }}">{{ collaboration.get_status_display }}</span>
+            </div>
+
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Opportunity</span>
+                    <span class="ucam-info-value"><a href="{{ collaboration.opportunity.get_absolute_url }}">{{ collaboration.opportunity.title }}</a></span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Faculty Department</span>
+                    <span class="ucam-info-value">{{ collaboration.opportunity.faculty.department.name }} ({{ collaboration.opportunity.faculty.department.code }})</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Start date</span>
+                    <span class="ucam-info-value">{{ collaboration.start_date|date:"d M Y" }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">End date</span>
+                    <span class="ucam-info-value">{{ collaboration.end_date|date:"d M Y"|default:"-" }}</span>
+                </div>
+            </div>
+
+            <h2 class="ucam-section-title">Description</h2>
+            {{ collaboration.description|default:"-"|linebreaks }}
+
+            <h2 class="ucam-section-title">Members ({{ members|length }})</h2>
+            {% if members %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle ucam-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Dept</th>
+                            <th>Batch</th>
+                            <th>Joined</th>
+                            {% if is_owner %}<th class="text-end">Action</th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in members %}
+                        <tr>
+                            <td>{{ member.student.user.get_full_name|default:member.student.user.username }}</td>
+                            <td>{{ member.student.student_id }}</td>
+                            <td>{{ member.student.department.code }}</td>
+                            <td>{{ member.student.batch }}</td>
+                            <td>{{ member.joined_at|date:"d M Y" }}</td>
+                            {% if is_owner %}
+                            <td class="text-end">
+                                <form method="post" action="{% url 'collaboration:member_remove' member.pk %}"
+                                      onsubmit="return confirm('Remove this member from the collaboration?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="ucam-btn ucam-btn-danger ucam-btn-sm">Remove</button>
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">No members yet.</p>
+            {% endif %}
+
+            <div class="ucam-actions">
+                {% if is_owner %}
+                <a href="{% url 'collaboration:member_add' collaboration.pk %}" class="ucam-btn ucam-btn-blue">
+                    <i class="bi bi-person-plus-fill"></i> Add member
+                </a>
+                <a href="{% url 'collaboration:edit' collaboration.pk %}" class="ucam-btn ucam-btn-outline">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <a href="{% url 'collaboration:delete' collaboration.pk %}" class="ucam-btn ucam-btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+                {% endif %}
+                <a href="{% url 'collaboration:mine' %}" class="ucam-btn ucam-btn-outline">Back to my collaborations</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

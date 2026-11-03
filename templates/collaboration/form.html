@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Edit Collaboration{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-pencil-square"></i></div>
+            <div>
+                <h1>Edit Collaboration</h1>
+                <p>{{ collaboration.opportunity.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.title %}
+                {% include 'partials/form_field.html' with field=form.description %}
+                <div class="row">
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.end_date %}</div>
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.status %}</div>
+                </div>
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i> Save changes
+                    </button>
+                    <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

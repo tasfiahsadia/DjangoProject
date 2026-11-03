@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Delete Collaboration{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow-sm">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-trash-fill"></i></div>
+            <div>
+                <h1>Delete Collaboration</h1>
+                <p>This action cannot be undone</p>
+            </div>
+        </div>
+        <div class="ucam-card-body">
+            <p>Are you sure you want to delete <strong>{{ collaboration.title }}</strong>?
+               All its members will be removed from the collaboration. The opportunity and the
+               applications will not be deleted.</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-danger">
+                        <i class="bi bi-trash"></i> Yes, delete
+                    </button>
+                    <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
