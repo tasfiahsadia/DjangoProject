@@ -1385,3 +1385,63 @@ a.ucam-btn-primary:hover {
     background: #e2e8f0;
     color: #475569;
 }
+
+.ucam-notif-count {
+    display: inline-block;
+    min-width: 18px;
+    padding: 1px 6px;
+    margin-left: 4px;
+    border-radius: 9px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.ucam-notif {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.ucam-notif:last-child {
+    border-bottom: none;
+}
+
+.ucam-notif.unread {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+}
+
+.ucam-notif-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #dbeafe;
+    color: #1e40af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ucam-notif-title {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.ucam-notif-msg {
+    font-size: 13.5px;
+    color: #475569;
+}
+
+.ucam-notif-time {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+}

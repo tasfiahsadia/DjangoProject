@@ -30,6 +30,15 @@
             <a href="{% url 'collaboration:mine' %}"
                class="{% if app_name == 'collaboration' %}active{% endif %}">Collaborations</a>
         </li>
+
+        <li>
+            <a href="{% url 'notifications:list' %}"
+               class="{% if app_name == 'notifications' %}active{% endif %}">
+                <i class="bi bi-bell-fill"></i> Notifications
+                {% if unread_notification_count %}<span class="ucam-notif-count">{{ unread_notification_count }}</span>{% endif %}
+            </a>
+        </li>
+
         <li>
             <a href="{% url 'accounts:profile' %}"
                class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>

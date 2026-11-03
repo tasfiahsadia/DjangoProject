@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <h1>Notifications</h1>
+    {% if notifications %}
+    <form method="post" action="{% url 'notifications:read_all' %}">
+        {% csrf_token %}
+        <button type="submit" class="ucam-btn ucam-btn-outline">
+            <i class="bi bi-check2-all"></i> Mark all as read
+        </button>
+    </form>
+    {% endif %}
+</div>
+
+{% if notifications %}
+<div class="ucam-card">
+    {% for n in notifications %}
+    <div class="ucam-notif{% if not n.is_read %} unread{% endif %}">
+        <div class="d-flex gap-3">
+            <div class="ucam-notif-icon">
+                {% if n.notification_type == 'APPLICATION' %}<i class="bi bi-send-fill"></i>
+                {% elif n.notification_type == 'EVALUATION' %}<i class="bi bi-clipboard-check-fill"></i>
+                {% else %}<i class="bi bi-people-fill"></i>{% endif %}
+            </div>
+            <div>
+                <div class="ucam-notif-title">{{ n.title }}</div>
+                <div class="ucam-notif-msg">{{ n.message }}</div>
+                <div class="ucam-notif-time">{{ n.created_at|timesince }} ago</div>
+            </div>
+        </div>
+        <div class="d-flex gap-2 flex-shrink-0">
+            <form method="post" action="{% url 'notifications:open' n.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="ucam-btn ucam-btn-blue ucam-btn-sm">
+                    {% if n.link %}View{% else %}Mark read{% endif %}
+                </button>
+            </form>
+            <form method="post" action="{% url 'notifications:delete' n.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="ucam-btn ucam-btn-danger ucam-btn-sm" title="Delete">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-bell"></i>
+    You have no notifications.
+</div>
+{% endif %}
+{% endblock %}
