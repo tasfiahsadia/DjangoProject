@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from accounts.decorators import role_required
 from accounts.models import User
 from opportunities.models import Opportunity
+from collaboration.models import CollaborationMember
 
 from .forms import (
     ApplicationAttachmentForm,
@@ -15,8 +16,6 @@ from .forms import (
 )
 from .models import Application, ApplicationAttachment, ApplicationEvaluation
 
-
-# ---------- Helpers ----------
 
 class PositionsFull(Exception):
     """Raised when all positions of an opportunity are already filled."""
@@ -34,7 +33,6 @@ def get_own_application(request, pk):
 def save_evaluation(form, application, faculty):
     """Save the evaluation and update the application status all-or-nothing."""
     with transaction.atomic():
-        # Lock the rows and re-check the rules with fresh data.
         opportunity = Opportunity.objects.select_for_update().get(
             pk=application.opportunity_id
         )
@@ -62,8 +60,13 @@ def save_evaluation(form, application, faculty):
         locked.status = evaluation.decision
         locked.save(update_fields=['status', 'updated_at'])
 
-
-# ---------- Student: apply, list, detail, edit, withdraw ----------
+        accepted_total = Application.objects.filter(
+            opportunity=opportunity, status=Application.Status.ACCEPTED
+        ).count()
+        if (accepted_total >= opportunity.positions
+                and opportunity.status == Opportunity.Status.OPEN):
+            opportunity.status = Opportunity.Status.CLOSED
+            opportunity.save(update_fields=['status', 'updated_at'])
 
 @role_required(User.Role.STUDENT)
 def apply(request, opportunity_pk):
@@ -97,7 +100,6 @@ def apply(request, opportunity_pk):
             try:
                 application.save()
             except IntegrityError:
-                # Two clicks at once: the database constraint stopped the duplicate.
                 messages.info(request, 'You have already applied to this opportunity.')
                 return redirect(opportunity)
             messages.success(request, 'Your application was submitted.')
@@ -164,8 +166,6 @@ def application_withdraw(request, pk):
     return redirect('applications:detail', pk=application.pk)
 
 
-# ---------- Student: attachments (media upload / delete) ----------
-
 @role_required(User.Role.STUDENT)
 def attachment_add(request, pk):
     application = get_own_application(request, pk)
@@ -206,8 +206,6 @@ def attachment_delete(request, pk):
         messages.success(request, 'File deleted.')
     return redirect('applications:detail', pk=application.pk)
 
-
-# ---------- Faculty: list applications and evaluate ----------
 
 @role_required(User.Role.FACULTY)
 def opportunity_applications(request, pk):
@@ -275,6 +273,16 @@ def application_review(request, pk):
                 form.add_error(None, str(error))
             else:
                 messages.success(request, 'Evaluation saved.')
+                already_member = CollaborationMember.objects.filter(
+                    collaboration__opportunity=application.opportunity,
+                    student=application.student,
+                ).exists()
+                if already_member and form.instance.decision != ApplicationEvaluation.Decision.ACCEPTED:
+                    messages.warning(
+                        request,
+                        'This student is already a member of the collaboration. '
+                        'Remove them from the collaboration page if needed.',
+                    )
                 return redirect('applications:review', pk=application.pk)
     else:
         form = ApplicationEvaluationForm(instance=evaluation, application=application)
@@ -286,8 +294,3 @@ def application_review(request, pk):
         'form': form,
         'can_evaluate': can_evaluate,
     })
-
-
-from django.shortcuts import render
-
-# Create your views here.
