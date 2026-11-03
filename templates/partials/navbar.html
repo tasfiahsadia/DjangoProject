@@ -26,7 +26,10 @@
                class="{% if app_name == 'applications' %}active{% endif %}">My Applications</a>
         </li>
         {% endif %}
-
+        <li>
+            <a href="{% url 'collaboration:mine' %}"
+               class="{% if app_name == 'collaboration' %}active{% endif %}">Collaborations</a>
+        </li>
         <li>
             <a href="{% url 'accounts:profile' %}"
                class="{% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">My Profile</a>

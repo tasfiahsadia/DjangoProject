@@ -190,11 +190,26 @@ def opportunity_detail(request, pk):
     if request.user.role == User.Role.STUDENT and profile is not None:
         my_application = profile.applications.filter(opportunity=opportunity).first()
 
+    collaboration = getattr(opportunity, 'collaboration', None)
+    can_view_collab = False
+    if collaboration is not None:
+        can_view_collab = is_owner or (
+            request.user.role == User.Role.STUDENT
+            and profile is not None
+            and collaboration.members.filter(student=profile).exists()
+        )
+    accepted_count = (
+        opportunity.applications.filter(status='ACCEPTED').count() if is_owner else 0
+    )
+
     return render(request, 'opportunities/detail.html', {
         'opportunity': opportunity,
         'is_owner': is_owner,
         'is_saved': pk in get_saved_ids(request.user),
         'my_application': my_application,
+        'collaboration': collaboration,
+        'can_view_collab': can_view_collab,
+        'accepted_count': accepted_count,
     })
 
 

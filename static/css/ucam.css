@@ -1374,3 +1374,14 @@ a.ucam-btn-primary:hover {
 .ucam-badge-accepted { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
 .ucam-badge-rejected { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
 .ucam-badge-withdrawn { color: #475569; background: #f1f5f9; border-color: #e2e8f0; }
+
+
+.ucam-badge-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ucam-badge-completed {
+    background: #e2e8f0;
+    color: #475569;
+}
