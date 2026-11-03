@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'opportunities',
     'applications',
     'collaboration',
+    'notifications',
 ]
 
 MIDDLEWARE = [
