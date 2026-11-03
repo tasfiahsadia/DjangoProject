@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Add File{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-paperclip"></i></div>
+            <div>
+                <h1>Add File</h1>
+                <p>{{ application.opportunity.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.title %}
+                {% include 'partials/form_field.html' with field=form.file %}
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-upload"></i> Upload
+                    </button>
+                    <a href="{% url 'applications:detail' application.pk %}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

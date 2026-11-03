@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Edit Application{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-pencil-square"></i></div>
+            <div>
+                <h1>Edit Application</h1>
+                <p>{{ application.opportunity.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.sop %}
+                {% include 'partials/form_field.html' with field=form.remarks %}
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i> Save changes
+                    </button>
+                    <a href="{% url 'applications:detail' application.pk %}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

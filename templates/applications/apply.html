@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Apply: {{ opportunity.title }}{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-send-fill"></i></div>
+            <div>
+                <h1>Apply</h1>
+                <p>{{ opportunity.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Posted by</span>
+                    <span class="ucam-info-value">{{ opportunity.faculty_name }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Deadline</span>
+                    <span class="ucam-info-value">
+                        {{ opportunity.deadline|date:"d M Y" }}
+                        {% if opportunity.days_left == 0 %}(last day){% else %}({{ opportunity.days_left }} days left){% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <p class="ucam-help mb-3">
+                Your CV from your profile will be shared with the faculty. You can attach more files after you submit.
+            </p>
+
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.sop %}
+                {% include 'partials/form_field.html' with field=form.remarks %}
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-send-fill"></i> Submit application
+                    </button>
+                    <a href="{{ opportunity.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

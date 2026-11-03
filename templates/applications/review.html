@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Review Application{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-clipboard-check-fill"></i></div>
+            <div>
+                <h1>Review Application</h1>
+                <p>{{ application.opportunity.title }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                {% include 'partials/status_badge.html' with status=application.status label=application.get_status_display %}
+            </div>
+
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Name</span>
+                    <span class="ucam-info-value">{{ application.student.user.get_full_name|default:application.student.user.username }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Student ID</span>
+                    <span class="ucam-info-value">{{ application.student.student_id }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Department</span>
+                    <span class="ucam-info-value">{{ application.student.department.name }} ({{ application.student.department.code }})</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Batch</span>
+                    <span class="ucam-info-value">{{ application.student.batch }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Semester</span>
+                    <span class="ucam-info-value">{{ application.student.semester|default:"-" }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">CV</span>
+                    <span class="ucam-info-value">
+                        {% if application.student.cv %}
+                        <a href="{{ application.student.cv.url }}" target="_blank">View CV (PDF)</a>
+                        {% else %}-{% endif %}
+                    </span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Interests</span>
+                    <span class="ucam-info-value">{{ application.student.interests|default:"-" }}</span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Statement of purpose</span>
+                    <span class="ucam-info-value">{{ application.sop|linebreaksbr }}</span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Additional remarks</span>
+                    <span class="ucam-info-value">{{ application.remarks|default:"-"|linebreaksbr }}</span>
+                </div>
+            </div>
+
+            <h2 class="ucam-section-title">Attached files</h2>
+            {% for attachment in attachments %}
+            <div class="ucam-resource">
+                <div>
+                    <div class="ucam-resource-name"><i class="bi bi-paperclip"></i> {{ attachment.title }}</div>
+                    <div class="ucam-resource-file">{{ attachment.filename }} &bull; {{ attachment.uploaded_at|date:"d M Y" }}</div>
+                </div>
+                <a href="{{ attachment.file.url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm" target="_blank">
+                    <i class="bi bi-eye"></i> Open
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-muted">No files attached.</p>
+            {% endfor %}
+
+            <h2 class="ucam-section-title">Evaluation</h2>
+            {% if can_evaluate %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="ucam-form" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">
+                        {% include 'partials/form_field.html' with field=form.score %}
+                    </div>
+                    <div class="col-md-8">
+                        {% include 'partials/form_field.html' with field=form.decision %}
+                    </div>
+                </div>
+                {% include 'partials/form_field.html' with field=form.feedback %}
+
+                <div class="ucam-actions">
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-check-circle-fill"></i>
+                        {% if evaluation %}Update evaluation{% else %}Save evaluation{% endif %}
+                    </button>
+                    <a href="{% url 'applications:opportunity_applications' application.opportunity.pk %}" class="ucam-btn ucam-btn-outline">Back to applications</a>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-secondary">
+                The student withdrew this application, so it cannot be evaluated.
+            </div>
+            <div class="ucam-actions">
+                <a href="{% url 'applications:opportunity_applications' application.opportunity.pk %}" class="ucam-btn ucam-btn-outline">Back to applications</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <h1>My Applications</h1>
+    <a href="{% url 'opportunities:list' %}" class="ucam-btn ucam-btn-outline">
+        <i class="bi bi-search"></i> Browse opportunities
+    </a>
+</div>
+
+{% if applications %}
+<div class="ucam-card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 ucam-table">
+            <thead>
+                <tr>
+                    <th>Opportunity</th>
+                    <th>Posted by</th>
+                    <th>Applied on</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>
+                        <a href="{% url 'applications:detail' application.pk %}" class="ucam-opp-title">{{ application.opportunity.title }}</a>
+                    </td>
+                    <td>{{ application.opportunity.faculty_name }}</td>
+                    <td>{{ application.applied_at|date:"d M Y" }}</td>
+                    <td>{% include 'partials/status_badge.html' with status=application.status label=application.get_status_display %}</td>
+                    <td class="text-end">
+                        <a href="{% url 'applications:detail' application.pk %}" class="ucam-btn ucam-btn-outline ucam-btn-sm">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-inbox"></i>
+    You have not applied to any opportunity yet.
+</div>
+{% endif %}
+{% endblock %}

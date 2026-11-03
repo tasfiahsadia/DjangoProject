@@ -1365,3 +1365,12 @@ a.ucam-btn-primary:hover {
 .ucam-filter .ucam-btn {
     height: 46px;
 }
+
+/* ==========================================================
+   Part 4: applications
+   ========================================================== */
+
+.ucam-badge-pending { color: #92400e; background: #fef3c7; border-color: #fde68a; }
+.ucam-badge-accepted { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
+.ucam-badge-rejected { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
+.ucam-badge-withdrawn { color: #475569; background: #f1f5f9; border-color: #e2e8f0; }

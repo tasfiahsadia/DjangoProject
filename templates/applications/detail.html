@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}My Application{% endblock %}
+
+{% block content %}
+<div class="ucam-narrow">
+    <div class="ucam-card">
+        <div class="ucam-card-header">
+            <div class="ucam-card-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+            <div>
+                <h1>{{ application.opportunity.title }}</h1>
+                <p>Applied on {{ application.applied_at|date:"d M Y" }}</p>
+            </div>
+        </div>
+
+        <div class="ucam-card-body">
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                {% include 'partials/status_badge.html' with status=application.status label=application.get_status_display %}
+            </div>
+
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Posted by</span>
+                    <span class="ucam-info-value">{{ application.opportunity.faculty_name }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Opportunity</span>
+                    <span class="ucam-info-value"><a href="{{ application.opportunity.get_absolute_url }}">View details</a></span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Statement of purpose</span>
+                    <span class="ucam-info-value">{{ application.sop|linebreaksbr }}</span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Additional remarks</span>
+                    <span class="ucam-info-value">{{ application.remarks|default:"-"|linebreaksbr }}</span>
+                </div>
+            </div>
+
+            <h2 class="ucam-section-title">Attached files</h2>
+            {% for attachment in attachments %}
+            <div class="ucam-resource">
+                <div>
+                    <div class="ucam-resource-name"><i class="bi bi-paperclip"></i> {{ attachment.title }}</div>
+                    <div class="ucam-resource-file">{{ attachment.filename }} &bull; {{ attachment.uploaded_at|date:"d M Y" }}</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ attachment.file.url }}" class="ucam-btn ucam-btn-outline ucam-btn-sm" target="_blank">
+                        <i class="bi bi-eye"></i> Open
+                    </a>
+                    {% if can_change %}
+                    <form method="post" action="{% url 'applications:attachment_delete' attachment.pk %}"
+                          onsubmit="return confirm('Delete this file?');">
+                        {% csrf_token %}
+                        <button type="submit" class="ucam-btn ucam-btn-danger ucam-btn-sm">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No files attached.</p>
+            {% endfor %}
+
+            {% if evaluation %}
+            <h2 class="ucam-section-title">Faculty evaluation</h2>
+            <div class="ucam-info-grid">
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Decision</span>
+                    <span class="ucam-info-value">{{ evaluation.get_decision_display }}</span>
+                </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">Score</span>
+                    <span class="ucam-info-value">{{ evaluation.score }} / 10</span>
+                </div>
+                <div class="ucam-info-item full">
+                    <span class="ucam-info-label">Feedback</span>
+                    <span class="ucam-info-value">{{ evaluation.feedback|linebreaksbr }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="ucam-actions">
+                {% if can_change %}
+                <a href="{% url 'applications:edit' application.pk %}" class="ucam-btn ucam-btn-blue">
+                    <i class="bi bi-pencil-square"></i> Edit application
+                </a>
+                <a href="{% url 'applications:attachment_add' application.pk %}" class="ucam-btn ucam-btn-outline">
+                    <i class="bi bi-paperclip"></i> Add file
+                </a>
+                <form method="post" action="{% url 'applications:withdraw' application.pk %}"
+                      onsubmit="return confirm('Withdraw this application? You cannot apply to this opportunity again.');">
+                    {% csrf_token %}
+                    <button type="submit" class="ucam-btn ucam-btn-danger">
+                        <i class="bi bi-x-circle"></i> Withdraw
+                    </button>
+                </form>
+                {% endif %}
+                <a href="{% url 'applications:mine' %}" class="ucam-btn ucam-btn-outline">Back to my applications</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

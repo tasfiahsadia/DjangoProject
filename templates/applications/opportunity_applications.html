@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Applications: {{ opportunity.title }}{% endblock %}
+
+{% block content %}
+<div class="ucam-page-head">
+    <div>
+        <h1>Applications</h1>
+        <div class="text-muted">
+            {{ opportunity.title }} &middot; {{ opportunity.positions }} position{{ opportunity.positions|pluralize }}
+        </div>
+    </div>
+    <a href="{{ opportunity.get_absolute_url }}" class="ucam-btn ucam-btn-outline">Back to opportunity</a>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a href="{% url 'applications:opportunity_applications' opportunity.pk %}"
+       class="ucam-btn ucam-btn-sm {% if not selected_status %}ucam-btn-blue{% else %}ucam-btn-outline{% endif %}">
+        All ({{ total_count }})
+    </a>
+    {% for row in status_rows %}
+    <a href="?status={{ row.value }}"
+       class="ucam-btn ucam-btn-sm {% if selected_status == row.value %}ucam-btn-blue{% else %}ucam-btn-outline{% endif %}">
+        {{ row.label }} ({{ row.count }})
+    </a>
+    {% endfor %}
+</div>
+
+{% if applications %}
+<div class="ucam-card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 ucam-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Dept</th>
+                    <th>Batch</th>
+                    <th>Applied on</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.student.user.get_full_name|default:application.student.user.username }}</td>
+                    <td>{{ application.student.student_id }}</td>
+                    <td>{{ application.student.department.code }}</td>
+                    <td>{{ application.student.batch }}</td>
+                    <td>{{ application.applied_at|date:"d M Y" }}</td>
+                    <td>{% include 'partials/status_badge.html' with status=application.status label=application.get_status_display %}</td>
+                    <td class="text-end">
+                        <a href="{% url 'applications:review' application.pk %}" class="ucam-btn ucam-btn-blue ucam-btn-sm">Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="ucam-empty">
+    <i class="bi bi-inbox"></i>
+    No applications to show.
+</div>
+{% endif %}
+{% endblock %}
