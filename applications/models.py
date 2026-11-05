@@ -9,7 +9,7 @@ from django.db import models
 
 from accounts.models import FacultyProfile, StudentProfile
 from opportunities.models import Opportunity
-
+#add check
 
 class Application(models.Model):
     class Status(models.TextChoices):
