@@ -25,7 +25,6 @@ urlpatterns = [
     path('opportunities/', include('opportunities.urls')),
     path('applications/', include('applications.urls')),
     path('collaborations/', include('collaboration.urls')),
-    path('collaborations/', include('collaboration.urls')),
     path('notifications/', include('notifications.urls')),
 ]
 
