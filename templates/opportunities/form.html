@@ -15,7 +15,11 @@
         <div class="ucam-card-body">
             <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
                 {% csrf_token %}
-
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
                 {% include 'partials/form_field.html' with field=form.title %}
 
                 <div class="row">
@@ -31,7 +35,7 @@
                     <div class="col-md-4">{% include 'partials/form_field.html' with field=form.duration %}</div>
                     <div class="col-md-4">{% include 'partials/form_field.html' with field=form.deadline %}</div>
                 </div>
-
+                {% include 'partials/form_field.html' with field=form.status %}
                 {% include 'partials/form_field.html' with field=form.target_departments %}
 
                 {% if not opportunity %}
