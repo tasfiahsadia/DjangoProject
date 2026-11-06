@@ -66,6 +66,7 @@ class StudentRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = User.Role.STUDENT
+        user.is_active = False
         user.save()
         StudentProfile.objects.create(
             user=user,
@@ -86,6 +87,19 @@ class LoginForm(AuthenticationForm):
             'placeholder': 'Password',
             'autocomplete': 'current-password',
         })
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        if username and password:
+            user = User.objects.filter(username=username).first()
+            if user and not user.is_active and user.check_password(password):
+                raise forms.ValidationError(
+                    'Your email is not verified yet. Open the verification link '
+                    'sent to your email, or request a new link below.',
+                    code='unverified',
+                )
+        return super().clean()
 
 class ResetRequestForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
@@ -165,3 +179,12 @@ class StyledPasswordChangeForm(PasswordChangeForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+class ResendVerificationForm(forms.Form):
+    email = forms.EmailField(
+        label='University email',
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'University email',
+            'autocomplete': 'email',
+        }),
+    )
