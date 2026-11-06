@@ -11,8 +11,9 @@ MAX_FILE_SIZE_MB = 5
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ('sop', 'remarks')
+        fields = ('cv', 'sop', 'remarks')
         labels = {
+            'cv': 'CV (PDF, max 5 MB)',
             'sop': 'Statement of purpose (SOP)',
             'remarks': 'Additional remarks (optional)',
         }
@@ -20,6 +21,10 @@ class ApplicationForm(forms.ModelForm):
             'sop': f'Minimum {SOP_MIN_LENGTH} characters.',
         }
         widgets = {
+            'cv': forms.ClearableFileInput(attrs={
+                'class': 'form-control',
+                'accept': 'application/pdf,.pdf',
+            }),
             'sop': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 8,
@@ -37,6 +42,16 @@ class ApplicationForm(forms.ModelForm):
                 'placeholder': 'Example: I am free on Sunday and Tuesday afternoons for meetings.',
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cv'].required = True
+
+    def clean_cv(self):
+        cv = self.cleaned_data.get('cv')
+        if isinstance(cv, UploadedFile) and cv.size > MAX_FILE_SIZE_MB * 1024 * 1024:
+            raise forms.ValidationError(f'CV must be {MAX_FILE_SIZE_MB} MB or smaller.')
+        return cv
 
     def clean_sop(self):
         sop = self.cleaned_data['sop'].strip()
