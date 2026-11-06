@@ -1,0 +1,19 @@
+{% extends 'auth_base.html' %}
+
+{% block title %}Resend Verification{% endblock %}
+{% block auth_title %}Resend Verification{% endblock %}
+{% block auth_subtitle %}Enter your university email and we will send a new verification link.{% endblock %}
+
+{% block auth_content %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% include 'partials/auth_field.html' with field=form.email icon='envelope-fill' %}
+    <button type="submit" class="ucam-btn-primary">
+        <i class="bi bi-send-fill"></i> Send verification link
+    </button>
+</form>
+
+<div class="ucam-alt-link">
+    <a href="{% url 'accounts:login' %}">&larr; Back to sign in</a>
+</div>
+{% endblock %}

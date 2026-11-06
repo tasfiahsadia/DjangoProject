@@ -26,5 +26,7 @@
 
 <div class="ucam-alt-link">
     New student? <a href="{% url 'accounts:register' %}">Create an account</a>
+    <br>
+    Email not verified? <a href="{% url 'accounts:resend_verification' %}">Resend verification link</a>
 </div>
 {% endblock %}
