@@ -152,3 +152,6 @@ MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
 
 # Development only: "send" emails by printing them in the terminal
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Verification and password-reset links stay valid for 1 day (value is in seconds)
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
