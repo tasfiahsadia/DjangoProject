@@ -88,6 +88,8 @@ def opportunity_delete(request, pk):
         for resource in opportunity.resources.all():
             resource.file.delete(save=False)
         for application in opportunity.applications.prefetch_related('attachments'):
+            if application.cv:
+                application.cv.delete(save=False)
             for attachment in application.attachments.all():
                 attachment.file.delete(save=False)
         opportunity.delete()

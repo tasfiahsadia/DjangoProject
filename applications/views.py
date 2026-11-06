@@ -91,12 +91,9 @@ def apply(request, opportunity_pk):
     if not opportunity.target_departments.filter(pk=student.department_id).exists():
         messages.error(request, 'This opportunity is not open to your department.')
         return redirect(opportunity)
-    if not student.cv:
-        messages.error(request, 'Please upload your CV in Edit Profile before applying.')
-        return redirect('accounts:profile_edit')
 
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
+        form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             application = form.save(commit=False)
             application.opportunity = opportunity
@@ -154,10 +151,14 @@ def application_edit(request, pk):
         messages.error(request, 'Only a pending application can be edited.')
         return redirect('applications:detail', pk=application.pk)
 
+    old_cv = application.cv.name
+
     if request.method == 'POST':
-        form = ApplicationForm(request.POST, instance=application)
+        form = ApplicationForm(request.POST, request.FILES, instance=application)
         if form.is_valid():
             form.save()
+            if old_cv and old_cv != application.cv.name:
+                application.cv.storage.delete(old_cv)
             messages.success(request, 'Your application was updated.')
             return redirect('applications:detail', pk=application.pk)
     else:
