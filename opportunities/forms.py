@@ -8,10 +8,31 @@ from accounts.models import Department
 from .models import Opportunity, OpportunityResource
 
 ALLOWED_EXTENSIONS = {'.pdf', '.doc', '.docx', '.ppt', '.pptx', '.txt', '.zip'}
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+MAX_FILE_SIZE = 5 * 1024 * 1024
+
+def validate_resource_file(uploaded):
+    """Shared check for resource files: allowed type and size."""
+    extension = os.path.splitext(uploaded.name)[1].lower()
+    if extension not in ALLOWED_EXTENSIONS:
+        raise forms.ValidationError(
+            'Allowed file types: PDF, DOC, DOCX, PPT, PPTX, TXT, ZIP.'
+        )
+    if uploaded.size > MAX_FILE_SIZE:
+        raise forms.ValidationError('File must be 5 MB or smaller.')
 
 
 class OpportunityForm(forms.ModelForm):
+    resource_title = forms.CharField(
+        max_length=150,
+        required=False,
+        label='Resource title (optional)',
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+    resource_file = forms.FileField(
+        required=False,
+        label='Resource file (optional)',
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+    )
     class Meta:
         model = Opportunity
         fields = (
@@ -50,10 +71,27 @@ class OpportunityForm(forms.ModelForm):
 
     def clean_deadline(self):
         deadline = self.cleaned_data['deadline']
-        # Check only when the deadline is new or was changed.
         if 'deadline' in self.changed_data and deadline < timezone.localdate():
             raise forms.ValidationError('Deadline cannot be in the past.')
         return deadline
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            del self.fields['resource_title']
+            del self.fields['resource_file']
+
+    def clean_resource_file(self):
+        uploaded = self.cleaned_data.get('resource_file')
+        if uploaded:
+            validate_resource_file(uploaded)
+        return uploaded
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('resource_title') and not cleaned_data.get('resource_file'):
+            self.add_error('resource_file', 'Please choose a file or clear the title.')
+        return cleaned_data
 
 
 class OpportunityResourceForm(forms.ModelForm):
@@ -67,13 +105,7 @@ class OpportunityResourceForm(forms.ModelForm):
 
     def clean_file(self):
         uploaded = self.cleaned_data['file']
-        extension = os.path.splitext(uploaded.name)[1].lower()
-        if extension not in ALLOWED_EXTENSIONS:
-            raise forms.ValidationError(
-                'Allowed file types: PDF, DOC, DOCX, PPT, PPTX, TXT, ZIP.'
-            )
-        if uploaded.size > MAX_FILE_SIZE:
-            raise forms.ValidationError('File must be 5 MB or smaller.')
+        validate_resource_file(uploaded)
         return uploaded
 
 

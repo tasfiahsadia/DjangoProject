@@ -13,7 +13,7 @@
         </div>
 
         <div class="ucam-card-body">
-            <form method="post" class="ucam-form" novalidate>
+            <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
                 {% csrf_token %}
 
                 {% include 'partials/form_field.html' with field=form.title %}
@@ -33,7 +33,15 @@
                 </div>
 
                 {% include 'partials/form_field.html' with field=form.target_departments %}
-                {% include 'partials/form_field.html' with field=form.status %}
+
+                {% if not opportunity %}
+                <h2 class="ucam-section-title">Attach a file (optional)</h2>
+                <div class="row">
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.resource_title %}</div>
+                    <div class="col-md-6">{% include 'partials/form_field.html' with field=form.resource_file %}</div>
+                </div>
+                <p class="ucam-help">PDF, DOC, DOCX, PPT, PPTX, TXT or ZIP. Maximum 5 MB. You can add more files later from the opportunity page.</p>
+                {% endif %}
 
                 <div class="ucam-actions">
                     <button type="submit" class="ucam-btn ucam-btn-blue">

@@ -1,3 +1,4 @@
+import os
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -40,12 +41,21 @@ def my_opportunities(request):
 @role_required(User.Role.FACULTY)
 def opportunity_create(request):
     if request.method == 'POST':
-        form = OpportunityForm(request.POST)
+        form = OpportunityForm(request.POST, request.FILES)
         if form.is_valid():
             opportunity = form.save(commit=False)
             opportunity.faculty = request.user.profile
             opportunity.save()
             form.save_m2m()
+
+            uploaded = form.cleaned_data.get('resource_file')
+            if uploaded:
+                OpportunityResource.objects.create(
+                    opportunity=opportunity,
+                    title=form.cleaned_data.get('resource_title')
+                    or os.path.splitext(uploaded.name)[0],
+                    file=uploaded,
+                )
             messages.success(request, 'Opportunity created.')
             return redirect(opportunity)
     else:
