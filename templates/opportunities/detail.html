@@ -77,20 +77,6 @@
                         <i class="bi bi-download"></i> Download
                     </a>
 
-                    {% if collaboration and can_view_collab %}
-                    <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-blue">
-                        <i class="bi bi-people-fill"></i> View collaboration
-                    </a>
-                    {% elif is_owner and not collaboration and accepted_count %}
-                    <form method="post" action="{% url 'collaboration:start' opportunity.pk %}"
-                          onsubmit="return confirm('Start the collaboration with the students accepted so far?');">
-                        {% csrf_token %}
-                        <button type="submit" class="ucam-btn ucam-btn-blue">
-                            <i class="bi bi-people-fill"></i> Start collaboration ({{ accepted_count }} accepted)
-                        </button>
-                    </form>
-                    {% endif %}
-
                     {% if is_owner %}
                     <form method="post" action="{% url 'opportunities:resource_delete' resource.pk %}">
                         {% csrf_token %}
@@ -104,6 +90,20 @@
             {% endfor %}
 
             <div class="ucam-actions">
+                {% if collaboration and can_view_collab %}
+                <a href="{{ collaboration.get_absolute_url }}" class="ucam-btn ucam-btn-blue">
+                    <i class="bi bi-people-fill"></i> View collaboration
+                </a>
+                {% elif is_owner and not collaboration and accepted_count %}
+                <form method="post" action="{% url 'collaboration:start' opportunity.pk %}"
+                      onsubmit="return confirm('Start the collaboration with the students accepted so far?');">
+                    {% csrf_token %}
+                    <button type="submit" class="ucam-btn ucam-btn-blue">
+                        <i class="bi bi-people-fill"></i> Start collaboration ({{ accepted_count }} accepted)
+                    </button>
+                </form>
+                {% endif %}
+
                 {% if is_owner %}
                 <a href="{% url 'opportunities:edit' opportunity.pk %}" class="ucam-btn ucam-btn-outline">
                     <i class="bi bi-pencil-square"></i> Edit
