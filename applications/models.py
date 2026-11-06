@@ -9,7 +9,7 @@ from django.db import models
 
 from accounts.models import FacultyProfile, StudentProfile
 from opportunities.models import Opportunity
-#add check
+
 
 class Application(models.Model):
     class Status(models.TextChoices):
@@ -26,6 +26,11 @@ class Application(models.Model):
     )
     sop = models.TextField(verbose_name='Statement of purpose')
     remarks = models.TextField(blank=True)
+    cv = models.FileField(
+        upload_to='applications/cvs/',
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.PENDING
     )
