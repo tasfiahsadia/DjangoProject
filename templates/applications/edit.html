@@ -13,8 +13,9 @@
         </div>
 
         <div class="ucam-card-body">
-            <form method="post" class="ucam-form" novalidate>
+            <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
                 {% csrf_token %}
+                {% include 'partials/form_field.html' with field=form.cv %}
                 {% include 'partials/form_field.html' with field=form.sop %}
                 {% include 'partials/form_field.html' with field=form.remarks %}
 

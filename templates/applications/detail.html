@@ -34,6 +34,14 @@
                     <span class="ucam-info-label">Additional remarks</span>
                     <span class="ucam-info-value">{{ application.remarks|default:"-"|linebreaksbr }}</span>
                 </div>
+                <div class="ucam-info-item">
+                    <span class="ucam-info-label">CV</span>
+                    <span class="ucam-info-value">
+                        {% if application.cv %}
+                        <a href="{{ application.cv.url }}" target="_blank">View CV (PDF)</a>
+                        {% else %}-{% endif %}
+                    </span>
+                </div>
             </div>
 
             <h2 class="ucam-section-title">Attached files</h2>
