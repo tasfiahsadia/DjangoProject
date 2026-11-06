@@ -119,7 +119,7 @@ class StudentProfileForm(forms.ModelForm):
         fields = ('profile_picture', 'bio', 'semester', 'interests', 'cv')
         labels = {
             'semester': 'Current semester',
-            'cv': 'CV (PDF, max 5 MB)',
+            'cv': 'CV (PDF, max 5 MB, optional)',
         }
         help_texts = {
             'interests': 'Separate with commas.',
