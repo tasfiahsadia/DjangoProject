@@ -19,11 +19,9 @@ class Opportunity(models.Model):
         OPEN = 'OPEN', 'Open'
         CLOSED = 'CLOSED', 'Closed'
 
-    # Who posted it (the faculty's own department is on faculty.department)
     faculty = models.ForeignKey(
         FacultyProfile, on_delete=models.CASCADE, related_name='opportunities'
     )
-    # Which departments' students can apply (one or many)
     target_departments = models.ManyToManyField(
         Department, related_name='opportunities'
     )

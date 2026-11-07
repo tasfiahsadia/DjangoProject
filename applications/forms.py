@@ -144,7 +144,6 @@ class ApplicationEvaluationForm(forms.ModelForm):
             raise forms.ValidationError('A withdrawn application cannot be evaluated.')
 
         if cleaned_data.get('decision') == ApplicationEvaluation.Decision.ACCEPTED:
-            # Count the other accepted applications (not this one, so re-evaluation works).
             accepted_count = (
                 Application.objects
                 .filter(

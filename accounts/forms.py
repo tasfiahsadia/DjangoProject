@@ -156,7 +156,6 @@ class StudentProfileForm(forms.ModelForm):
 
     def clean_profile_picture(self):
         picture = self.cleaned_data.get('profile_picture')
-        # Check the size only for a newly uploaded file, never for an old one.
         if isinstance(picture, UploadedFile) and picture.size > 2 * 1024 * 1024:
             raise forms.ValidationError('Image must be 2 MB or smaller.')
         return picture

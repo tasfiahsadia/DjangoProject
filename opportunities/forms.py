@@ -1,10 +1,7 @@
 import os
-
 from django import forms
 from django.utils import timezone
-
 from accounts.models import Department
-
 from .models import Opportunity, OpportunityResource
 
 ALLOWED_EXTENSIONS = {'.pdf', '.doc', '.docx', '.ppt', '.pptx', '.txt', '.zip'}
