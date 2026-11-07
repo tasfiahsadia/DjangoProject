@@ -27,15 +27,14 @@
                 </div>
             </div>
 
-            <p class="ucam-help mb-3">
-                Upload the CV you want to share with the faculty for this application. You can attach more files after you submit.
-            </p>
-
             <form method="post" enctype="multipart/form-data" class="ucam-form" novalidate>
                 {% csrf_token %}
-                {% include 'partials/form_field.html' with field=form.cv %}
                 {% include 'partials/form_field.html' with field=form.sop %}
                 {% include 'partials/form_field.html' with field=form.remarks %}
+                {% include 'partials/form_field.html' with field=form.cv %}
+                <p class="ucam-help mb-3">
+                    Upload the CV you want to share with the faculty for this application. You can attach more files after you submit.
+                </p>
 
                 <div class="ucam-actions">
                     <button type="submit" class="ucam-btn ucam-btn-blue">
